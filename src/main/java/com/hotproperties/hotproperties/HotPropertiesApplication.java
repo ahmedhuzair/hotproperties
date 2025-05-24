@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HotpropertiesApplication {
+public class HotPropertiesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HotpropertiesApplication.class, args);
+		SpringApplication.run(HotPropertiesApplication.class, args);
 	}
 
 }
