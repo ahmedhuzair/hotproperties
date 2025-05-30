@@ -11,21 +11,33 @@
 
     <form method="post" th:action="@{/properties/add}" th:object="${property}" enctype="multipart/form-data">
 
-        <label for="firstName">Title</label>
-        <input id="firstName" required="" th:field="*{firstName}" type="text"/>
+        <label for="title">Title</label>
+        <input id="title" required="" th:field="*{title}" type="text"/>
 
-        <label for="lastName">Last Name</label>
-        <input id="lastName" required="" th:field="*{lastName}" type="text"/>
+        <label for="price">Price</label>
+        <input id="price" required="" th:field="*{price}" type="text"/>
 
-        <label for="username">Email</label>
-        <input id="username" required="" th:field="*{email}" type="text"/>
+        <label for="location">Location</label>
+        <input id="location" required="" th:field="*{location}" type="text"/>
 
-        <label for="password">Password</label>
-        <input id="password" required="" th:field="*{password}" type="password"/>
+        <label for="size">Size (sq ft)</label>
+        <input id="size" required="" th:field="*{size}" type="number"/>
+
+        <label for="description">Description</label>
+        <input id="description" required="" th:field="*{description}" type="text"/>
+
+        <label for="propertyPicture">Upload Property Images</label>
+        <input id="propertyPicture" type="file" name="file" accept="image/*"/>
 
         <br/><br/>
 
-        <button class="submit-btn" type="submit">Create Agent</button>
+        <button class="submit-btn" type="submit">Add Property</button>
+
+
+        <div class="back-link">
+            <a th:href="@{/dashboard}">← Back to Dashboard</a>
+        </div>
+
     </form>
 
 </div>
