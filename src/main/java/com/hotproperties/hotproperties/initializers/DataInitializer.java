@@ -27,33 +27,16 @@ public class DataInitializer {
 
             User u1 = new User(
                     "Mason", "Lee", "mason.lee@email.com", passwordEncoder.encode("ml.123"),
-                    Role.ADMIN
+                    Role.ROLE_ADMIN
+
             );
 
 
-            User u2 = new User(
-                    "Isabella", "Carter", "isabella.carter@email.com", passwordEncoder.encode("ic.123"),
-                    Role.BUYER
-            );
+            userRepository.saveAll(List.of(u1));
 
-            User u3 = new User(
-                    "Ethan", "Brooks", "ethan.brooks@email.com", passwordEncoder.encode("eb.123"),
-                    Role.BUYER
-            );
-
-
-            User u4 = new User(
-                    "Henry", "Wallace", "henry.wallace@email.com", passwordEncoder.encode("hw.123"),
-                    Role.AGENT
-            );
-
-
-
-            userRepository.saveAll(List.of(u1, u2, u3, u4));
-
-            System.out.println("🟢 Initial users and roles inserted.");
+            System.out.println("🟢 Admin with email:'mason.lee@email.com' and pw: 'ml.123'  created .");
         } else {
-            System.out.println("🟡 Users and roles already exist, skipping initialization.");
+            System.out.println("🟡 Admin already exists, skipping initialization.");
         }
     }
 }

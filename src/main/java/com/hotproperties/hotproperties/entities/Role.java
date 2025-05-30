@@ -1,7 +1,7 @@
 package com.hotproperties.hotproperties.entities;
 
 public enum Role {
-    BUYER,
-    AGENT,
-    ADMIN
+    ROLE_BUYER,
+    ROLE_AGENT,
+    ROLE_ADMIN
 }

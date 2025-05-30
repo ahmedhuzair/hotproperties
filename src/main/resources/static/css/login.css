@@ -18,7 +18,7 @@ form label {
 }
 
 .login-container {
-    text-align: center;
+    text-align: left;
     width: 500px;
     margin-top: 80px;
     padding: 25px;
@@ -102,6 +102,21 @@ button {
     cursor: pointer;
 }
 
+button.logout {
+    width: 25%;
+    padding: 10px;
+    background-color: indianred;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.logout:hover {
+    background-color: #b22222; /* Darker shade of IndianRed */
+}
+
 button:hover {
     background-color: #0056b3;
 }
@@ -124,6 +139,10 @@ th, td {
 
 tr {
     border-bottom: 1px solid #ccc;
+}
+
+.profile-table, .profile-table td, .profile-table tr {
+    border: none;
 }
 
 .back-link {

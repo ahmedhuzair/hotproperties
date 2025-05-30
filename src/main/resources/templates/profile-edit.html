@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Profile</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+</head>
+<body>
+<div class="login-container">
+    <h1>Edit Profile</h1>
+
+    <form class="section-spacing" method="post" th:action="@{/profile/edit}" enctype="multipart/form-data">
+        <table class="inline-style-4">
+            <tr>
+                <td><label for="firstName">First Name:</label></td>
+                <td><input id="firstName" name="firstName" required="" th:value="${user.firstName}" type="text"/></td>
+            </tr>
+            <tr>
+                <td><label for="lastName">Last Name:</label></td>
+                <td><input id="lastName" name="lastName" required="" th:value="${user.lastName}" type="text"/></td>
+            </tr>
+            <tr>
+                <td><label for="email">Email:</label></td>
+                <td><input id="email" name="email" required="" th:value="${user.email}" type="email"/></td>
+            </tr>
+
+        </table>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <a th:href="@{/profile}">
+                <button type="submit">Save Changes</button>
+            </a>
+            <a th:href="@{/profile}">
+                <button type="button">Cancel</button>
+            </a>
+        </div>
+    </form>
+
+
+</div>
+</body>
+</html>

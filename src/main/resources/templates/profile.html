@@ -2,17 +2,17 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User Profile</title>
+    <title>My Profile</title>
     <link rel="stylesheet" th:href="@{/css/login.css}"/>
 </head>
 <body>
 <div class="login-container">
-    <h1>User Profile</h1>
-    <!-- Profile Picture -->
-    <div style="text-align: center; margin-bottom: 20px;">
-        <img th:src="@{'/profile-pictures/' + ${user.profilePicture}}"
-             alt="Profile Picture"
-             style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 2px solid #333;" />
+    <h1>My Profile</h1>
+    <div th:if="${successMessage}" class="success">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <div th:if="${errorMessage}" class="failure">
+        <p th:text="${errorMessage}"></p>
     </div>
     <table class="profile-table">
         <tr>
@@ -24,25 +24,25 @@
             <td th:text="${user.lastName}">Lee</td>
         </tr>
         <tr>
-            <td><strong>Username:</strong></td>
-            <td th:text="${user.username}">sampleuser</td>
-        </tr>
-        <tr>
             <td><strong>Email:</strong></td>
             <td th:text="${user.email}">mason.lee@email.com</td>
         </tr>
         <tr>
-            <td><strong>Roles:</strong></td>
-            <td>
-                <ul class="no-bullets">
-                    <li th:each="role : ${user.roles}" th:text="${role.name}">ROLE_USER</li>
-                </ul>
+            <td><strong>Role:</strong></td>
+            <td th:text="${user.role.name.replace('ROLE_', '')}">
+               buyer, Agent etc.
             </td>
         </tr>
     </table>
-    <div class="back-link">
-        <a th:href="@{/dashboard}">← Back to Dashboard</a>
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <a th:href="@{/profile/edit}">
+            <button type="button">Edit Profile</button>
+        </a>
+        <a th:href="@{/dashboard}">
+            <button type="button">Back to Dashboard</button>
+        </a>
     </div>
+
 </div>
 </body>
 </html>

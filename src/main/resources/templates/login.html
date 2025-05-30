@@ -24,8 +24,8 @@
         <p th:text="${error}"></p>
     </div>
     <form method="post" th:action="@{/login}" th:object="${user}">
-        <label for="username">Username</label>
-        <input id="username" th:field="*{username}" type="text"/>
+        <label for="username">Email</label>
+        <input id="username" th:field="*{email}" type="text"/>
         <label for="password">Password</label>
         <input id="password" th:field="*{password}" type="password"/>
         <!-- Show Password Checkbox -->
@@ -40,7 +40,7 @@
     <!-- Register Link -->
     <p class="section-spacing">
         Don't have an account?
-        <a th:href="@{/register}">Register</a>
+        <a th:href="@{/register}">Register here</a>
     </p>
 </div>
 </body>

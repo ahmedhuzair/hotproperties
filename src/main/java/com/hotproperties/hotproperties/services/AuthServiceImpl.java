@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
     public JwtResponse authenticateAndGenerateToken(User user) {
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
             );
             SecurityContextHolder.getContext().setAuthentication(auth);
 
@@ -64,12 +64,12 @@ public class AuthServiceImpl implements AuthService {
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        return userRepository.findByUsername(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'AGENT')")
     public void clearJwtCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("jwt", "");
         cookie.setPath("/");
@@ -78,6 +78,11 @@ public class AuthServiceImpl implements AuthService {
         cookie.setSecure(true); // only if your app uses HTTPS
         response.addCookie(cookie);
     }
+
+
+
+
+
 
 }
 

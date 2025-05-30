@@ -7,16 +7,23 @@
 <body>
 
 <div class="login-container">
-    <h1>Welcome to the Application</h1>
+    <h1>Welcome to HotProperties</h1>
+    <p style="text-align: center">Find your dream home or manage your listings with ease.</p>
 
     <!-- ✅ Static image served from /static/images -->
-    <img th:src="@{/images/spring.webp}" alt="Spring Boot Dashboard" class="centered-image" />
+<!--    <img th:src="@{/images/spring.webp}" alt="Spring Boot Dashboard" class="centered-image" />-->
 
-    <p class="centered-link">Please log in to access your dashboard.</p>
+<!--    <p class="centered-link">Please log in to access your dashboard.</p>-->
 
-    <div class="back-link">
-        <a th:href="@{/login}">Log In</a>
+    <div style="display: flex; justify-content: center; gap: 10px;">
+        <a th:href="@{/login}">
+            <button type="button">Log In</button>
+        </a>
+        <a th:href="@{/register}">
+            <button type="button">Register</button>
+        </a>
     </div>
+
 </div>
 
 </body>
