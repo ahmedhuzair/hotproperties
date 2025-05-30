@@ -17,9 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Controller
 public class UserAccountController {
 
@@ -54,7 +51,7 @@ public class UserAccountController {
         try {
             Cookie jwtCookie = authService.loginAndCreateJwtCookie(user);
             response.addCookie(jwtCookie);
-            return "redirect:/profile";
+            return "redirect:/dashboard";
         } catch (BadCredentialsException e) {
             model.addAttribute("error", "Invalid username or password");
             return "login";
@@ -66,7 +63,7 @@ public class UserAccountController {
     @PreAuthorize("hasAnyRole('BUYER', 'AGENT', 'ADMIN')")
     public String logout(HttpServletResponse response) {
         authService.clearJwtCookie(response);
-        return "redirect:/auth/login";
+        return "redirect:/login";
     }
 
     // === DASHBOARD / PROFILE / EDIT PROFILE ===

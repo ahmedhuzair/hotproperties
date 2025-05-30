@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
         user.setLastName(updatedUser.getLastName());
         user.setEmail(updatedUser.getEmail());
 
-
         userRepository.save(user);
     }
 
