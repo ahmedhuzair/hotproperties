@@ -34,7 +34,7 @@ public class AgentController {
         this.propertyService = propertyService;
     }
 
-    // === PROPERTY REGISTRATION BY AGENT ONLY ===
+    // === PROPERTY ADDING BY AGENT ONLY ===
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/properties/add")
@@ -45,15 +45,15 @@ public class AgentController {
 
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/properties/add")
-    public String addProperty(@ModelAttribute("property") Property property, RedirectAttributes redirectAttributes){
+    public String addProperty(@ModelAttribute("property") Property property, RedirectAttributes redirectAttributes) {
         try {
             // First, register the Property (this will assign them an ID)
             Property savedProperty = propertyService.registerNewProperty(property);
-            redirectAttributes.addFlashAttribute("successMessage", "Property Registration Successful.");
-            return "redirect:/manage-properties";
+            redirectAttributes.addFlashAttribute("successMessage", "Property added successfully");
+            return "redirect:/properties/manage";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Property Registration Failed: " + e.getMessage());
-            return "redirect:/manage-properties";
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add property. Please try again." + e.getMessage());
+            return "redirect:/properties/manage";
         }
     }
 
@@ -64,6 +64,41 @@ public class AgentController {
         return "manage-properties";
     }
 
+    //
+//    // === PROFILE PICTURE UPLOAD ===
+//    @PostMapping("/users/{id}/upload-profile-picture")
+//    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
+//    public String uploadProfilePicture(@PathVariable Long id,
+//                                       @RequestParam("file") MultipartFile file,
+//                                       RedirectAttributes redirectAttributes) {
+//        try {
+//            String filename = userService.storeProfilePicture(id, file);
+//            redirectAttributes.addFlashAttribute("message", "Profile picture uploaded: " + filename);
+//        } catch (Exception e) {
+//            redirectAttributes.addFlashAttribute("error", "Upload failed: " + e.getMessage());
+//        }
+//        return "redirect:/profile";
+//    }
+
+//    @GetMapping("/profile-pictures/{filename:.+}")
+//    @ResponseBody
+//    public ResponseEntity<Resource> serveProfilePicture(@PathVariable String filename) {
+//        try {
+//            Path filePath = Paths.get("uploads/profile-pictures/").resolve(filename).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//
+//            if (resource.exists() && resource.isReadable()) {
+//                return ResponseEntity.ok()
+//                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+//                        .contentType(MediaTypeFactory.getMediaType(resource).orElse(MediaType.APPLICATION_OCTET_STREAM))
+//                        .body(resource);
+//            } else {
+//                return ResponseEntity.notFound().build();
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
 
 }

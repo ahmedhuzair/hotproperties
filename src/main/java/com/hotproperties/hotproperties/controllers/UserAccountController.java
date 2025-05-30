@@ -61,6 +61,7 @@ public class UserAccountController {
         }
     }
 
+    //=== LOGOUT ===
     @GetMapping("/logout")
     @PreAuthorize("hasAnyRole('BUYER', 'AGENT', 'ADMIN')")
     public String logout(HttpServletResponse response) {
@@ -115,16 +116,6 @@ public class UserAccountController {
     }
 
 
-    // === ADMIN + MANAGER VIEWS ===
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping("/admin/users")
-//    public String viewAllUsers(Model model) {
-//        model.addAttribute("users", userService.getAllUsers());
-//        return "all_users";
-//    }
-
-
-
     // === BUYER REGISTRATION ===
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
@@ -134,101 +125,20 @@ public class UserAccountController {
 
     @PostMapping("/register")
     public String registerBuyer(@ModelAttribute("user") User user,
-                               RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes) {
         try {
             // First, register the user (this will assign them an ID)
             User savedUser = userService.registerNewUser(user, Role.ROLE_BUYER);
 
 
-            redirectAttributes.addFlashAttribute("successMessage", "Registration successful.");
+            redirectAttributes.addFlashAttribute("successMessage", "Buyer registration successful.");
             return "redirect:/login";
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Registration failed: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Buyer registration failed: " + e.getMessage());
             return "redirect:/register";
         }
     }
 
-    // === AGENT REGISTRATION BY ADMIN ONLY ===
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/users/admin/create-agent")
-    public String showCreateAgentForm(Model model) {
-        model.addAttribute("user", new User());
-        return "create-agent";
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/users/admin/create-agent")
-    public String registerAgent(@ModelAttribute("user") User user,
-                               RedirectAttributes redirectAttributes) {
-        try {
-            // First, register the user (this will assign them an ID)
-            User savedUser = userService.registerNewUser(user, Role.ROLE_AGENT);
-
-
-            redirectAttributes.addFlashAttribute("successMessage", "Agent Registration Successful.");
-            return "redirect:/dashboard";
-
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Agent Registration Failed: " + e.getMessage());
-            return "redirect:/dashboard";
-        }
-    }
-
-    // === VIEW ALL USERS FOR ADMIN ONLY ===
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/users/admin")
-    public String viewAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "view-all-users";
-    }
-
-    // === DELETE USER FOR ADMIN ONLY ===
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/delete/user/{email}")
-    public String deleteUser(@PathVariable String email, RedirectAttributes redirectAttributes) {
-        userService.deleteUserByEmail(email);
-        redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully.");
-        return "redirect:/users/admin";
-    }
-
-
-
-//
-//    // === PROFILE PICTURE UPLOAD ===
-//    @PostMapping("/users/{id}/upload-profile-picture")
-//    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
-//    public String uploadProfilePicture(@PathVariable Long id,
-//                                       @RequestParam("file") MultipartFile file,
-//                                       RedirectAttributes redirectAttributes) {
-//        try {
-//            String filename = userService.storeProfilePicture(id, file);
-//            redirectAttributes.addFlashAttribute("message", "Profile picture uploaded: " + filename);
-//        } catch (Exception e) {
-//            redirectAttributes.addFlashAttribute("error", "Upload failed: " + e.getMessage());
-//        }
-//        return "redirect:/profile";
-//    }
-
-    @GetMapping("/profile-pictures/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveProfilePicture(@PathVariable String filename) {
-        try {
-            Path filePath = Paths.get("uploads/profile-pictures/").resolve(filename).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (resource.exists() && resource.isReadable()) {
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                        .contentType(MediaTypeFactory.getMediaType(resource).orElse(MediaType.APPLICATION_OCTET_STREAM))
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
 }
