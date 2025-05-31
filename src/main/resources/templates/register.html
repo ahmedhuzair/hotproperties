@@ -13,7 +13,7 @@
     <form method="post" th:action="@{/register}" th:object="${user}" enctype="multipart/form-data">
 
         <label for="username">Email</label>
-        <input id="username" required="" th:field="*{email}" type="text"/>
+        <input id="username" required="" th:field="*{email}" type="email"/>
 
         <label for="password">Password</label>
         <input id="password" required="" th:field="*{password}" type="password"/>

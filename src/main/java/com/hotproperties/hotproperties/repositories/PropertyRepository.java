@@ -8,4 +8,11 @@ import java.util.List;
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     List<Property> findAllByOrderByTitle();
+
+    boolean existsById(Long id);
+
+    boolean existsByTitle(String title);
+
+
+    List<Property> id(Long id);
 }

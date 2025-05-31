@@ -2,6 +2,7 @@ package com.hotproperties.hotproperties.services;
 
 import com.hotproperties.hotproperties.entities.Role;
 import com.hotproperties.hotproperties.entities.User;
+import com.hotproperties.hotproperties.exceptions.AlreadyExistsException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.UserRepository;
 import com.hotproperties.hotproperties.utils.CurrentUserContext;
@@ -70,6 +71,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerNewUser(User user, Role role) {
+        Optional<User> foundUser = userRepository.findByEmail(user.getEmail());
+        if (foundUser.isPresent()) {
+            throw new AlreadyExistsException("User already exists");
+        }
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

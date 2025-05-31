@@ -102,6 +102,21 @@ button {
     cursor: pointer;
 }
 
+button.red {
+    width: 100%;
+    padding: 10px;
+    background-color: indianred;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.red:hover {
+    background-color: #b22222;
+}
+
 button.logout {
     width: 25%;
     padding: 10px;
@@ -114,7 +129,7 @@ button.logout {
 }
 
 button.logout:hover {
-    background-color: #b22222; /* Darker shade of IndianRed */
+    background-color: #b22222;
 }
 
 button:hover {

@@ -2,25 +2,14 @@ package com.hotproperties.hotproperties.controllers;
 
 
 import com.hotproperties.hotproperties.entities.Property;
-import com.hotproperties.hotproperties.entities.Role;
 import com.hotproperties.hotproperties.entities.User;
-import com.hotproperties.hotproperties.services.AuthService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.*;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Controller
 public class AgentController {
@@ -40,7 +29,7 @@ public class AgentController {
     @GetMapping("/properties/add")
     public String showAddPropertyForm(Model model) {
         model.addAttribute("property", new Property());
-        return "add-property";
+        return "/agent/add-property";
     }
 
     @PreAuthorize("hasRole('AGENT')")
@@ -61,7 +50,49 @@ public class AgentController {
     @GetMapping("/properties/manage")
     public String viewAllProperties(Model model) {
         model.addAttribute("properties", propertyService.getAllProperties());
-        return "manage-properties";
+        return "/agent/manage-properties";
+    }
+
+    // === DELETE PROPERTY FOR AGENT ONLY ===
+
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/delete/property/{property_id}")
+    public String deleteProperty(@PathVariable Long property_id, RedirectAttributes redirectAttributes) {
+        propertyService.deletePropertyById(property_id);
+        redirectAttributes.addFlashAttribute("successMessage", "Property deleted successfully.");
+        return "redirect:/properties/manage";
+    }
+
+    // === EDIT PROPERTY FOR AGENT ONLY ===
+    @GetMapping("/properties/edit")
+    @PreAuthorize("hasRole('AGENT')")
+    public String showEditProperty(Model model) {
+        propertyService.prepareEditPropertyModel(   model);
+        return "agent/edit-property";
+    }
+
+
+    @PostMapping("/properties/edit/{property_id}")
+    @PreAuthorize("hasRole('AGENT')")
+    public String editProperty(@ModelAttribute("user") User updatedUser,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            // Look up the real user so we get the correct ID
+            User actualUser = userService.getCurrentUser();
+
+            // Copy updates from form-bound user
+            actualUser.setFirstName(updatedUser.getFirstName());
+            actualUser.setLastName(updatedUser.getLastName());
+            actualUser.setEmail(updatedUser.getEmail());
+
+            userService.updateUserProfile(actualUser);
+
+
+            redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully.");
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to update profile: " + ex.getMessage());
+        }
+        return "redirect:/profile";
     }
 
     //

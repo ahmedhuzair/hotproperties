@@ -27,7 +27,7 @@ public class AdminController {
     @GetMapping("/users/admin/create-agent")
     public String showCreateAgentForm(Model model) {
         model.addAttribute("user", new User());
-        return "create-agent";
+        return "admin/create-agent";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -53,7 +53,7 @@ public class AdminController {
     @GetMapping("/users/admin")
     public String viewAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        return "view-all-users";
+        return "admin/view-all-users";
     }
 
     // === DELETE USER FOR ADMIN ONLY ===

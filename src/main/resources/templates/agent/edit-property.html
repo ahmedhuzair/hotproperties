@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Property</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+</head>
+<body>
+<div class="login-container">
+    <h1>Edit Property</h1>
+
+    <form class="section-spacing" method="post" th:action="@{/profile/edit}" enctype="multipart/form-data">
+        <table class="inline-style-4">
+            <tr>
+                <td><label for="title">Title:</label></td>
+                <td><input id="title" name="title" required="" th:value="${property.title}" type="text"/></td>
+            </tr>
+            <tr>
+                <td><label for="price">Price:</label></td>
+                <td><input id="price" name="price" required="" th:value="${property.price}" type="number"/></td>
+            </tr>
+            <tr>
+                <td><label for="location">Location:</label></td>
+                <td><input id="location" name="location" required="" th:value="${property.location}" type="text"/></td>
+            </tr>
+            <tr>
+                <td><label for="size">Size (sq ft):</label></td>
+                <td><input id="size" name="size" required="" th:value="${property.size}" type="number"/></td>
+            </tr>
+            <tr>
+                <td><label for="description">Description:</label></td>
+                <td><input id="description" name="description" required="" th:value="${property.description}" type="text"/></td>
+            </tr>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <a th:href="@{/properties/manage}">
+                <button type="submit">Save Changes</button>
+            </a>
+            <a th:href="@{/properties/manage}">
+                <button type="button">Cancel</button>
+            </a>
+        </div>
+    </form>
+
+
+</div>
+</body>
+</html>

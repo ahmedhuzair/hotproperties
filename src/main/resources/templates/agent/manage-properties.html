@@ -36,14 +36,17 @@
 <!--            <td th:text="">Location</td>-->
 
             <td>
-                <a th:href="@{/edit/property/{title}(title=${p.title})}">
-                    <button type="button">Edit</button>
-                </a>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a th:href="@{/properties/edit/{property_id}(property_id=${p.id})}">
+                        <button type="button">Edit</button>
+                    </a>
 
-                <a th:href="@{/delete/property/{title}(title=${p.title})}">
-                    <button type="button">Delete</button>
-                </a>
+                    <a th:href="@{/delete/property/{property_id}(property_id=${p.id})}">
+                        <button class="red" type="button">Delete</button>
+                    </a>
+                </div>
             </td>
+
         </tr>
         </tbody>
     </table>

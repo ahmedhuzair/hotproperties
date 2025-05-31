@@ -19,12 +19,13 @@ public interface PropertyService {
     void editProperty(Property property);
 
     @PreAuthorize("hasRole('AGENT')")
-    void deletePropertyByTitle(Property property);
+    void deletePropertyById(Long id);
 
     @PreAuthorize("isAuthenticated()")
     void preparePropertyModel(Model model);
 
     @PreAuthorize("isAuthenticated()")
     void prepareEditPropertyModel(Model model);
+
 
 }

@@ -1,6 +1,7 @@
 package com.hotproperties.hotproperties.services;
 
 import com.hotproperties.hotproperties.entities.Property;
+import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -34,8 +35,11 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void deletePropertyByTitle(Property property) {
-
+    public void deletePropertyById(Long id) {
+        if (!propertyRepository.existsById(id)){
+            throw new NotFoundException("Property does not exist");
+        }
+        propertyRepository.deleteById(id);
     }
 
     @Override
@@ -45,6 +49,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public void prepareEditPropertyModel(Model model) {
+
 
     }
 }
