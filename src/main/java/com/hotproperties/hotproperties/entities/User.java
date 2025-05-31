@@ -62,6 +62,11 @@ public class User {
 
     }
 
+    public void addProperty(Property property) {
+        this.properties.add(property);
+        property.setAgent(this);
+    }
+
     // --- Getters and Setters ---
     public Long getId() {
         return id;

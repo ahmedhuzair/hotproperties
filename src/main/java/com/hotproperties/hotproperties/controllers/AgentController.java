@@ -9,7 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class AgentController {
@@ -34,10 +37,16 @@ public class AgentController {
 
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/properties/add")
-    public String addProperty(@ModelAttribute("property") Property property, RedirectAttributes redirectAttributes) {
+    public String addProperty(@ModelAttribute("property") Property property, @RequestParam("files") List<MultipartFile> files, RedirectAttributes redirectAttributes) {
         try {
             // First, register the Property (this will assign them an ID)
             Property savedProperty = propertyService.registerNewProperty(property);
+
+            // Then, store the property picture (if uploaded)
+            if (files != null && !files.isEmpty()) {
+                propertyService.storePropertyImages(savedProperty.getId(), files);
+
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Property added successfully");
             return "redirect:/properties/manage";
         } catch (Exception e) {
@@ -49,7 +58,7 @@ public class AgentController {
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/properties/manage")
     public String viewAllProperties(Model model) {
-        model.addAttribute("properties", propertyService.getAllProperties());
+        model.addAttribute("properties", propertyService.getAllProperties(userService.getCurrentUser()));
         return "/agent/manage-properties";
     }
 
@@ -67,7 +76,7 @@ public class AgentController {
     @GetMapping("/properties/edit")
     @PreAuthorize("hasRole('AGENT')")
     public String showEditProperty(Model model) {
-        propertyService.prepareEditPropertyModel(   model);
+        propertyService.prepareEditPropertyModel(model);
         return "agent/edit-property";
     }
 
@@ -75,7 +84,7 @@ public class AgentController {
     @PostMapping("/properties/edit/{property_id}")
     @PreAuthorize("hasRole('AGENT')")
     public String editProperty(@ModelAttribute("user") User updatedUser,
-                              RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes) {
         try {
             // Look up the real user so we get the correct ID
             User actualUser = userService.getCurrentUser();

@@ -52,6 +52,12 @@ public class Property {
         this.agent = agent;
     }
 
+    public void addImage(PropertyImage image) {
+        this.images.add(image);
+        image.setProperty(this);
+    }
+
+
     public Long getId() {
         return id;
     }

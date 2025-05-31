@@ -21,8 +21,8 @@
             <th>Price</th>
             <th>Location</th>
             <th>Size</th>
-<!--            <th>Images</th>-->
-<!--            <th>Favourites</th>-->
+            <th>Images</th>
+            <th>Favourites</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -32,8 +32,16 @@
             <td th:text="${p.price}">Price</td>
             <td th:text="${p.location}">Location</td>
             <td th:text="${p.size}">Size</td>
-<!--            <td th:text="">Images</td>-->
-<!--            <td th:text="">Location</td>-->
+            <td>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div th:each="img : ${p.images}" style="margin-bottom: 10px;">
+                        <img th:src="@{'/property-images/' + ${img.imageFileName}}"
+                             alt="Property Image"
+                             style="width: 120px; height: 100px; object-fit: cover; border: 1px solid #ccc;" />
+                    </div>
+                </div>
+            </td>
+            <td>0</td>
 
             <td>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
