@@ -29,13 +29,13 @@
 - [x] 4.1 Dashboard
   - [x] 4.1.1 My Profile
     - [x] 4.1.1.1 Edit Profile
-  - [ ] 4.1.2 Browse Properties
+  - [x] 4.1.2 Browse Properties
     - [ ] 4.1.2.1 Filters 🎁
       - [ ] Zip code 🎁
       - [ ] Min sq. ft. 🎁
       - [ ] Min/Max Price 🎁
       - [ ] Sort By 🎁
-    - [ ] 4.1.2.2 View Property Details
+    - [x] 4.1.2.2 View Property Details
       - [ ] 4.1.2.2.1 Image Viewer
       - [ ] 4.1.2.2.2 Add to/Remove from Favorites 🎁
       - [ ] 4.1.2.2.3 Send Message 🎁
@@ -44,7 +44,7 @@
     - [ ] 4.1.3.2 Remove 🎁
   - [ ] 4.1.4 View Messages 🎁
     - [ ] 4.1.4.1 Delete 🎁
-  - [ ] 4.1.5 Logout
+  - [x] 4.1.5 Logout
 
 ## 5. Admin Functionality [Required: 15%]
 - [x] 5.1 Dashboard
