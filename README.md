@@ -17,7 +17,7 @@
     - [x] 3.1.1.1 Edit Profile
   - [x] 3.1.2 Manage Listings
     - [x] 3.1.2.1 Add Property
-    - [ ] 3.1.2.2 Edit Property
+    - [x] 3.1.2.2 Edit Property
     - [x] 3.1.2.3 Delete Property 🎁
   - [ ] 3.1.3 View Messages 🎁
     - [ ] 3.1.3.1 View 🎁
