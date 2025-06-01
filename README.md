@@ -1,34 +1,34 @@
 # ✅ Real Estate Platform - Feature Checklist
 
 ## 1. Users, Roles & Security/Authentication [Required: 15%]
-- [ ] 1.1 Roles
-  - [ ] BUYER
-  - [ ] AGENT
-  - [ ] ADMIN
-- [ ] 1.2 JWT-Based Authentication
+- [x] 1.1 Roles
+  - [x] BUYER
+  - [x] AGENT
+  - [x] ADMIN
+- [x] 1.2 JWT-Based Authentication
 
 ## 2. Landing Page(s) [15%]
-- [ ] 2.1 Login
-- [ ] 2.2 Register
+- [x] 2.1 Login
+- [x] 2.2 Register
 
 ## 3. Agent Functionality [Required: 15%]
-- [ ] 3.1 Dashboard
-  - [ ] 3.1.1 My Profile
-    - [ ] 3.1.1.1 Edit Profile
-  - [ ] 3.1.2 Manage Listings
-    - [ ] 3.1.2.1 Add Property
+- [x] 3.1 Dashboard
+  - [x] 3.1.1 My Profile
+    - [x] 3.1.1.1 Edit Profile
+  - [x] 3.1.2 Manage Listings
+    - [x] 3.1.2.1 Add Property
     - [ ] 3.1.2.2 Edit Property
-    - [ ] 3.1.2.3 Delete Property
+    - [x] 3.1.2.3 Delete Property
   - [ ] 3.1.3 View Messages
     - [ ] 3.1.3.1 View
       - [ ] 3.1.3.1.1 Reply
     - [ ] 3.1.3.2 Delete
-  - [ ] 3.1.4 Logout
+  - [x] 3.1.4 Logout
 
 ## 4. Buyer Functionality [Required: 15%]
-- [ ] 4.1 Dashboard
-  - [ ] 4.1.1 My Profile
-    - [ ] 4.1.1.1 Edit Profile
+- [x] 4.1 Dashboard
+  - [x] 4.1.1 My Profile
+    - [x] 4.1.1.1 Edit Profile
   - [ ] 4.1.2 Browse Properties
     - [ ] 4.1.2.1 Filters
       - [ ] Zip code
@@ -47,15 +47,15 @@
   - [ ] 4.1.5 Logout
 
 ## 5. Admin Functionality [Required: 15%]
-- [ ] 5.1 Dashboard
-  - [ ] 5.1.1 My Profile
-    - [ ] 5.1.1.1 Edit Profile
-  - [ ] 5.1.2 Manage Users
-    - [ ] 5.1.2.1 User List
-      - [ ] 5.1.2.1.1 Delete User
-  - [ ] 5.1.3 Create Agent
-    - [ ] 5.1.3.1 Create Agent Form
-  - [ ] 5.1.4 Logout
+- [x] 5.1 Dashboard
+  - [x] 5.1.1 My Profile
+    - [x] 5.1.1.1 Edit Profile
+  - [x] 5.1.2 Manage Users
+    - [x] 5.1.2.1 User List
+      - [x] 5.1.2.1.1 Delete User
+  - [x] 5.1.3 Create Agent
+    - [x] 5.1.3.1 Create Agent Form
+  - [x] 5.1.4 Logout
 
 ---
 
