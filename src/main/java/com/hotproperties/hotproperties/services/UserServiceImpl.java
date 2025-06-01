@@ -105,6 +105,6 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsByEmail(email)) {
             throw new NotFoundException("User with email " + email + " does not exist");
         }
-        userRepository.deleteByEmail(email);
+            userRepository.deleteByEmail(email);
     }
 }

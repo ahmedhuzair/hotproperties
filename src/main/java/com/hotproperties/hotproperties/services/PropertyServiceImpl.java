@@ -5,6 +5,7 @@ import com.hotproperties.hotproperties.entities.PropertyImage;
 import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
+import com.hotproperties.hotproperties.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -23,11 +24,13 @@ public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepository propertyRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository) {
         this.propertyRepository = propertyRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
@@ -102,7 +105,7 @@ public class PropertyServiceImpl implements PropertyService {
             }
         }
         agent.getProperties().remove(property);
-        propertyRepository.deleteById(id);
+        userRepository.save(agent);
     }
 
     @Override
