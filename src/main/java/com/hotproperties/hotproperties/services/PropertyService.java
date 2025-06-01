@@ -29,9 +29,6 @@ public interface PropertyService {
     void deletePropertyByIdForCurrentAgent(Long id);
 
     @PreAuthorize("isAuthenticated()")
-    void preparePropertyModel(Model model);
-
-    @PreAuthorize("isAuthenticated()")
     void prepareEditPropertyModel(Model model, Long id);
 
     @PreAuthorize("hasRole('AGENT')")

@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
     public void prepareEditProfileModel(Model model) {
         CurrentUserContext context = getCurrentUserContext();
         User user = context.user();
-        Authentication auth = context.auth();
 
         model.addAttribute("user", user);
 

@@ -140,12 +140,6 @@ public class PropertyServiceImpl implements PropertyService {
 
     }
 
-
-    @Override
-    public void preparePropertyModel(Model model) {
-
-    }
-
     @Override
     public void prepareEditPropertyModel(Model model, Long id) {
         User agent = userService.getCurrentUser();
