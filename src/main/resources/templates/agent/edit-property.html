@@ -9,7 +9,7 @@
 <div class="login-container">
     <h1>Edit Property</h1>
 
-    <form class="section-spacing" method="post" th:action="@{/profile/edit}" enctype="multipart/form-data">
+    <form class="section-spacing" method="post" th:action="@{/properties/edit/{property_id}(property_id=${property.id})}" enctype="multipart/form-data">
         <table class="inline-style-4">
             <tr>
                 <td><label for="title">Title:</label></td>
@@ -29,8 +29,23 @@
             </tr>
             <tr>
                 <td><label for="description">Description:</label></td>
-                <td><input id="description" name="description" required="" th:value="${property.description}" type="text"/></td>
+                <td><input id="description" name="description" required="" th:value="${property.description}" type="text"></input></td>
             </tr>
+            <tr>
+                <td><label for="propertyPictures">Images:</label></td>
+                <td>
+                    <input id="propertyPictures" type="file" name="files" accept="image/*" multiple/>
+                    <div th:if="${property.images}">
+                        <div style="margin-top: 10px;">
+                            <p>Current Images:</p>
+                            <div th:each="img : ${property.images}" style="margin-bottom: 10px;">
+                                <img th:src="@{'/property-images/' + ${img.imageFileName}}"
+                                     alt="Property Image"
+                                     style="width: 120px; height: 100px; object-fit: cover; border: 1px solid #ccc;"/>
+                            </div>
+                        </div>
+                    </div>
+                </td>
         </table>
 
         <div style="display: flex; justify-content: space-between; margin-top: 20px;">

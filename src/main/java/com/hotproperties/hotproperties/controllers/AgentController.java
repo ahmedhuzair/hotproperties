@@ -2,6 +2,7 @@ package com.hotproperties.hotproperties.controllers;
 
 
 import com.hotproperties.hotproperties.entities.Property;
+import com.hotproperties.hotproperties.entities.PropertyImage;
 import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
@@ -73,35 +74,45 @@ public class AgentController {
     }
 
     // === EDIT PROPERTY FOR AGENT ONLY ===
-    @GetMapping("/properties/edit")
+    @GetMapping("/properties/edit/{property_id}")
     @PreAuthorize("hasRole('AGENT')")
-    public String showEditProperty(Model model) {
-        propertyService.prepareEditPropertyModel(model);
-        return "agent/edit-property";
+    public String showEditProperty(Model model, @PathVariable String property_id) {
+        propertyService.prepareEditPropertyModel(model, Long.parseLong(property_id));
+        return "/agent/edit-property";
     }
 
 
     @PostMapping("/properties/edit/{property_id}")
     @PreAuthorize("hasRole('AGENT')")
-    public String editProperty(@ModelAttribute("user") User updatedUser,
-                               RedirectAttributes redirectAttributes) {
+    public String editProperty(@ModelAttribute("property") Property updatedProperty,
+                               @RequestParam("files") List<MultipartFile> files,
+                               RedirectAttributes redirectAttributes,
+                               @PathVariable String property_id) {
         try {
-            // Look up the real user so we get the correct ID
-            User actualUser = userService.getCurrentUser();
 
-            // Copy updates from form-bound user
-            actualUser.setFirstName(updatedUser.getFirstName());
-            actualUser.setLastName(updatedUser.getLastName());
-            actualUser.setEmail(updatedUser.getEmail());
+            Property property = propertyService.getPropertyByIdForCurrentAgent(Long.parseLong(property_id));
+            if (property == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Property not found.");
+                return "redirect:/properties/manage";
+            }
 
-            userService.updateUserProfile(actualUser);
+            property.setTitle(updatedProperty.getTitle());
+            property.setDescription(updatedProperty.getDescription());
+            property.setPrice(updatedProperty.getPrice());
+            property.setLocation(updatedProperty.getLocation());
+            property.setSize(updatedProperty.getSize());
 
+            propertyService.editProperty(property);
 
-            redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully.");
+            if (files != null && !files.isEmpty()) {
+                propertyService.storePropertyImages(property.getId(), files);
+            }
+
+            redirectAttributes.addFlashAttribute("successMessage", "Property updated successfully.");
         } catch (Exception ex) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to update profile: " + ex.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to update property: " + ex.getMessage());
         }
-        return "redirect:/profile";
+        return "redirect:/properties/manage";
     }
 
     //

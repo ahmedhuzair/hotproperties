@@ -45,8 +45,32 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void editProperty(Property property) {
+    public Property getPropertyByIdForCurrentAgent(Long id) {
+        User agent = userService.getCurrentUser();
+        if (!propertyRepository.existsById(id)) {
+            throw new NotFoundException("Property not found");
+        }
+        return propertyRepository.findByIdAndAgent(id, agent);
+    }
 
+    @Override
+    public void editProperty(Property property) {
+        User agent = userService.getCurrentUser();
+        Optional<Property> existingPropertyOpt = propertyRepository.findById(property.getId());
+
+        if (existingPropertyOpt.isPresent()) {
+            Property existingProperty = existingPropertyOpt.get();
+            if (!existingProperty.getAgent().getId().equals(agent.getId())) {
+                throw new RuntimeException("You do not own this property.");
+            }
+            existingProperty.setTitle(property.getTitle());
+            existingProperty.setDescription(property.getDescription());
+            existingProperty.setPrice(property.getPrice());
+            existingProperty.setLocation(property.getLocation());
+            propertyRepository.save(existingProperty);
+        } else {
+            throw new NotFoundException("Property not found");
+        }
     }
     @Transactional
     @Override
@@ -83,9 +107,15 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void prepareEditPropertyModel(Model model) {
-
-
+    public void prepareEditPropertyModel(Model model, Long id) {
+        User agent = userService.getCurrentUser();
+        Property properties = propertyRepository.findByIdAndAgent(id, agent);
+        if (properties == null) {
+            throw new NotFoundException("Property not found");
+        }
+        model.addAttribute("property", properties);
+        model.addAttribute("images", properties.getImages());
+        model.addAttribute("agent", agent);
     }
 
     @Override

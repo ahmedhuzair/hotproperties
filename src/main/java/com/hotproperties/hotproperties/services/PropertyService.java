@@ -18,6 +18,9 @@ public interface PropertyService {
     List<Property> getAllProperties(User agent);
 
     @PreAuthorize("hasRole('AGENT')")
+    Property getPropertyByIdForCurrentAgent(Long id);
+
+    @PreAuthorize("hasRole('AGENT')")
     void editProperty(Property property);
 
     @PreAuthorize("hasRole('AGENT')")
@@ -27,7 +30,7 @@ public interface PropertyService {
     void preparePropertyModel(Model model);
 
     @PreAuthorize("isAuthenticated()")
-    void prepareEditPropertyModel(Model model);
+    void prepareEditPropertyModel(Model model, Long id);
 
     @PreAuthorize("hasRole('AGENT')")
     void storePropertyImages(Long id, List<MultipartFile> images);

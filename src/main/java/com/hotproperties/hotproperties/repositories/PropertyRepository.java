@@ -10,6 +10,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     List<Property> findAllByAgentOrderByTitleDesc(User agent);
 
+    Property findByIdAndAgent(Long id, User agent);
+
     boolean existsById(Long id);
 
     boolean existsByTitle(String title);
