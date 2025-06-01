@@ -5,16 +5,16 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center; /* centers horizontally */
-    align-items: flex-start; /* adjust vertical alignment as needed */
-    min-height: 100vh; /* ensure full viewport height */
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
 }
 
 form label {
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
-    text-align: left; /* ✅ ensure left alignment */
+    text-align: left;
 }
 
 .login-container {
@@ -141,9 +141,9 @@ ul li {
 }
 
 table {
-    border-spacing: 0 12px; /* vertical spacing between rows */
+    border-spacing: 0 12px;
 
-        border-collapse: collapse; /* ✅ ensures borders align */
+        border-collapse: collapse;
         width: 100%;
 }
 

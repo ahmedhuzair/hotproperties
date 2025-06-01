@@ -40,8 +40,13 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<Property> getAllProperties(User agent) {
+    public List<Property> getAllPropertiesByAgent(User agent) {
         return propertyRepository.findAllByAgentOrderByTitleDesc(agent);
+    }
+
+    @Override
+    public List<Property> getAllProperties() {
+        return propertyRepository.findAllByOrderByTitleDesc();
     }
 
     @Override
@@ -124,6 +129,12 @@ public class PropertyServiceImpl implements PropertyService {
             System.out.println("Failed to delete image: " + ex.getMessage());
             throw new RuntimeException("Failed to delete property image", ex);
         }
+    }
+
+    @Override
+    public Property viewPropertyDetail(Long propertyId) {
+        return propertyRepository.findPropertyById(propertyId);
+
     }
 
 

@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${property.title}">Property Details</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
 </head>
 <body>
+<div class="container">
 
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 th:text="${property.title}">Property Title</h1>
+        <a th:href="@{/dashboard}">
+            <button class="red "type="button"> Remove From Favorites</button>
+        </a>
+    </div>
+
+    <!-- Property Info and Remove Button -->
+    <div>
+        <p><strong>Price:</strong> $<span th:text="${property.price}"></span></p>
+        <p><strong>Location:</strong> <span th:text="${property.location}"></span></p>
+        <p><strong>Size:</strong> <span th:text="${property.size}"></span> sq ft</p>
+    </div>
+
+    <!-- Property Description -->
+    <div style="margin-top: 20px;">
+        <h3>Description:</h3>
+        <p th:text="${property.description}">Property description</p>
+    </div>
+
+    <!-- Property Images -->
+    <div style="margin-top: 20px;">
+        <h3>Property Images</h3>
+        <div th:each="img : ${property.images}" style="margin-bottom: 10px;">
+            <img th:src="@{'/property-images/' + ${img.imageFileName}}"
+                 alt="Property Image"
+                 style="width: 300px; height: 200px; object-fit: cover; border: 1px solid #ccc;" />
+        </div>
+    </div>
+
+    <!-- Message Form -->
+    <div style="margin-top: 30px;">
+        <h3>Contact the Agent</h3>
+        <form th:action="@{/properties/message/{id}(id=${property.id})}" method="post">
+            <textarea name="message" rows="4" style="width: 100%;" placeholder="Your Message"></textarea>
+            <br><br>
+            <button type="submit">Send Message</button>
+        </form>
+        <br>
+        <a th:href="@{/properties/list}">← Back to Listings</a>
+    </div>
+
+</div>
 </body>
 </html>

@@ -2,8 +2,6 @@ package com.hotproperties.hotproperties.controllers;
 
 
 import com.hotproperties.hotproperties.entities.Property;
-import com.hotproperties.hotproperties.entities.PropertyImage;
-import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,7 +57,7 @@ public class AgentController {
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/properties/manage")
     public String viewAllProperties(Model model) {
-        model.addAttribute("properties", propertyService.getAllProperties(userService.getCurrentUser()));
+        model.addAttribute("properties", propertyService.getAllPropertiesByAgent(userService.getCurrentUser()));
         return "/agent/manage-properties";
     }
 
@@ -90,8 +88,8 @@ public class AgentController {
     // === EDIT PROPERTY FOR AGENT ONLY ===
     @GetMapping("/properties/edit/{property_id}")
     @PreAuthorize("hasRole('AGENT')")
-    public String showEditProperty(Model model, @PathVariable String property_id) {
-        propertyService.prepareEditPropertyModel(model, Long.parseLong(property_id));
+    public String showEditProperty(Model model, @PathVariable Long property_id) {
+        propertyService.prepareEditPropertyModel(model, property_id);
         return "/agent/edit-property";
     }
 
