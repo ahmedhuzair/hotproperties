@@ -37,7 +37,7 @@
                     <div th:each="img : ${p.images}" style="margin-bottom: 10px;">
                         <img th:src="@{'/property-images/' + ${img.imageFileName}}"
                              alt="Property Image"
-                             style="width: 120px; height: 100px; object-fit: cover; border: 1px solid #ccc;" />
+                             style="width: 120px; height: 100px; object-fit: cover; border: 1px solid #ccc;"/>
                     </div>
                 </div>
             </td>
@@ -50,7 +50,10 @@
                     </a>
 
                     <a th:href="@{/delete/property/{property_id}(property_id=${p.id})}">
-                        <button class="red" type="button">Delete</button>
+                        <button class="red" type="button"
+                                onclick="return confirm('Are you sure you want to delete this property?')">
+                            Delete
+                        </button>
                     </a>
                 </div>
             </td>

@@ -31,7 +31,9 @@
             <td>
                 <a th:href="@{/delete/user/{email}(email=${u.email})}">
 
-                    <button class ="red" type="button">Delete</button>
+                    <button class="red" type="button"
+                            onclick="return confirm('Are you sure you want to delete this user?')">Delete
+                    </button>
                 </a>
             </td>
         </tr>
