@@ -67,7 +67,7 @@ public class AgentController {
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/delete/property/{property_id}")
     public String deleteProperty(@PathVariable Long property_id, RedirectAttributes redirectAttributes) {
-        propertyService.deletePropertyById(property_id);
+        propertyService.deletePropertyByIdForCurrentAgent(property_id);
         redirectAttributes.addFlashAttribute("successMessage", "Property deleted successfully.");
         return "redirect:/properties/manage";
     }

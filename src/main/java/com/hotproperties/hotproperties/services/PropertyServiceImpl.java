@@ -6,6 +6,7 @@ import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,11 +48,16 @@ public class PropertyServiceImpl implements PropertyService {
     public void editProperty(Property property) {
 
     }
-
+    @Transactional
     @Override
-    public void deletePropertyById(Long id) {
+    public void deletePropertyByIdForCurrentAgent(Long id) {
+        User agent = userService.getCurrentUser();
         Property property = propertyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Property not found"));
+
+        if (!agent.getProperties().contains(property)) {
+            throw new RuntimeException("You do not own this property.");
+        }
 
         Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads", "property-images");
 
@@ -66,7 +72,7 @@ public class PropertyServiceImpl implements PropertyService {
                 }
             }
         }
-
+        agent.getProperties().remove(property);
         propertyRepository.deleteById(id);
     }
 
