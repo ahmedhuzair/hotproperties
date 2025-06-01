@@ -100,6 +100,32 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepository.deleteById(id);
     }
 
+    @Override
+    public void deletePropertyImage(Long propertyId, Long imageId) {
+        User agent = userService.getCurrentUser();
+        Property property = propertyRepository.findByIdAndAgent(propertyId, agent);
+        if (property == null) {
+            throw new NotFoundException("Property not found");
+        }
+
+        PropertyImage imageToDelete = property.getImages().stream()
+                .filter(image -> image.getId() == imageId)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Image not found"));
+
+        Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads", "property-images");
+        Path imagePath = uploadPath.resolve(imageToDelete.getImageFileName());
+
+        try {
+            Files.deleteIfExists(imagePath);
+            property.getImages().remove(imageToDelete);
+            propertyRepository.save(property);
+        } catch (IOException ex) {
+            System.out.println("Failed to delete image: " + ex.getMessage());
+            throw new RuntimeException("Failed to delete property image", ex);
+        }
+    }
+
 
     @Override
     public void preparePropertyModel(Model model) {

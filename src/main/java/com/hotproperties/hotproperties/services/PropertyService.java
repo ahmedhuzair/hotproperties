@@ -35,5 +35,8 @@ public interface PropertyService {
     @PreAuthorize("hasRole('AGENT')")
     void storePropertyImages(Long id, List<MultipartFile> images);
 
+    @PreAuthorize("hasRole('AGENT')")
+    void deletePropertyImage(Long propertyId, Long imageId);
+
 
 }

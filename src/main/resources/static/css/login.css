@@ -19,7 +19,7 @@ form label {
 
 .login-container {
     text-align: left;
-    width: 500px;
+    width: auto;
     margin-top: 80px;
     padding: 25px;
     background-color: white;

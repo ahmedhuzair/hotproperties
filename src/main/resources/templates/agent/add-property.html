@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/login.css}"/>
 </head>
 <body>
-<div class="container">
+<div class="login-container">
     <h1>Add New Property</h1>
 
     <form method="post" th:action="@{/properties/add}" th:object="${property}" enctype="multipart/form-data">
@@ -24,7 +24,8 @@
         <input id="size" required="" th:field="*{size}" type="number"/>
 
         <label for="description">Description</label>
-        <input id="description" required="" th:field="*{description}" type="text"/>
+<!--        <input id="description" required="" th:field="*{description}" type="text"/>-->
+        <textarea id="description" required="" th:field="*{description}" rows="4" cols="50"></textarea>
 
         <label for="propertyPictures">Upload Property Images</label>
         <input id="propertyPictures" type="file" name="files" accept="image/*" multiple/>

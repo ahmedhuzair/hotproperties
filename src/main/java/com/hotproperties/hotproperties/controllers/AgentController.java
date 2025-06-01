@@ -73,6 +73,20 @@ public class AgentController {
         return "redirect:/properties/manage";
     }
 
+    @PreAuthorize("hasRole('AGENT')")
+    @PostMapping("/properties/{propertyId}/images/{imageId}/delete")
+    public String deletePropertyImage(@PathVariable Long propertyId,
+                                      @PathVariable Long imageId,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            propertyService.deletePropertyImage(propertyId, imageId);
+            redirectAttributes.addFlashAttribute("successMessage", "Image deleted successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete image: " + e.getMessage());
+        }
+        return "redirect:/properties/edit/" + propertyId;
+    }
+
     // === EDIT PROPERTY FOR AGENT ONLY ===
     @GetMapping("/properties/edit/{property_id}")
     @PreAuthorize("hasRole('AGENT')")
