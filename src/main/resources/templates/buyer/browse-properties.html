@@ -24,13 +24,13 @@
         </div>
     </form>
     <div th:each="p : ${properties}" class="property-card"
-         style="display: flex; border: 1px solid #ccc; border-radius: 4px; padding: 15px; margin-bottom: 20px; gap: 20px; align-items: flex-start;">
+         style="display: flex; border: 1px solid #ccc; border-radius: 4px; padding: 15px; margin-bottom: 20px; gap: 20px; align-items: stretch;">
 
         <!-- Image Section -->
         <div th:if="${not #lists.isEmpty(p.images)}" style="flex-shrink: 0;">
             <img th:src="@{'/property-images/' + ${p.images[0].imageFileName}}"
                  alt="Property Image"
-                 style="width: 220px; height: 150px; object-fit: cover; border-radius: 4px;" />
+                 style="width: 220px; height: 100%; object-fit: cover; border-radius: 4px;" />
         </div>
 
         <!-- Details Section -->

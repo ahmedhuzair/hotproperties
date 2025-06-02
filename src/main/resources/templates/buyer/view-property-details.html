@@ -11,12 +11,18 @@
 
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h1 th:text="${property.title}">Property Title</h1>
-        <a th:href="@{/dashboard}">
-            <button class="red "type="button"> Remove From Favorites</button>
+        <a th:if="${!isFavorite}"
+           th:href="@{/favorites/add/{id}(id=${property.id})}">
+            <button type="button">Add to Favorites</button>
+        </a>
+
+        <a th:if="${isFavorite}"
+           th:href="@{/favorites/remove/{id}(id=${property.id})}">
+            <button type="button" class="red">Remove from Favorites</button>
         </a>
     </div>
 
-    <!-- Property Info and Remove Button -->
+
     <div>
         <p><strong>Price:</strong> $<span th:text="${property.price}"></span></p>
         <p><strong>Location:</strong> <span th:text="${property.location}"></span></p>

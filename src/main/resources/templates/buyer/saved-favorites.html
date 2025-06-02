@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>My Favorites</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
 </head>
 <body>
+<div class="container">
 
+    <h1>My Favorite Properties</h1>
+
+
+    <div th:each="p : ${properties}" class="property-card"
+         style="display: flex; border: 1px solid #ccc; border-radius: 4px; padding: 15px; gap: 20px; margin-bottom: 15px; align-items: stretch;">
+
+        <!-- Image Section -->
+        <div th:if="${not #lists.isEmpty(p.images)}" style="flex-shrink: 0;">
+            <img th:src="@{'/property-images/' + ${p.images[0].imageFileName}}"
+                 alt="Property Image"
+                 style="width: 220px; height: 100%; object-fit: cover; border-radius: 4px;" />
+        </div>
+
+        <!-- Details Section -->
+        <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="color: #007BFF; margin-top: 0;" th:text="${p.title}">Property Title</h3>
+                <p><strong>Price:</strong> $<span th:text="${p.price}"></span></p>
+                <p><strong>Location:</strong> <span th:text="${p.location}"></span></p>
+                <p><strong>Sq. Ft.:</strong> <span th:text="${p.size}"></span></p>
+            </div>
+
+
+            <div style=" align-self: flex-start; display: flex; gap: 5px">
+                <a th:href="@{/properties/view/{id}(id=${p.id})}">
+                    <button type="button">View Details</button>
+                </a>
+                <a
+                   th:href="@{/favorites/remove/favoritesPage/{id}(id=${p.id})}">
+                    <button type="button" class="red"
+                            onclick="return confirm('Are you sure you want to remove this property from Favorites?')">Remove from Favorites</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="back-link">
+        <a th:href="@{/dashboard}">← Back to Dashboard</a>
+    </div>
+</div>
 </body>
 </html>

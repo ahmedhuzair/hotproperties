@@ -19,6 +19,15 @@ public interface PropertyService {
     @PreAuthorize("hasRole('BUYER')")
     List<Property> getAllProperties();
 
+    @PreAuthorize("hasRole('BUYER')")
+    void addPropertyToFavorites(Long propertyId);
+
+    @PreAuthorize("hasRole('BUYER')")
+    void removePropertyFromFavorites(Long propertyId);
+
+    @PreAuthorize("hasRole('BUYER')")
+    boolean isPropertyFavoritedByCurrentUser(Long propertyId);
+
     @PreAuthorize("hasRole('AGENT')")
     Property getPropertyByIdForCurrentAgent(Long id);
 
@@ -39,4 +48,9 @@ public interface PropertyService {
 
     @PreAuthorize("hasRole('BUYER')")
     Property viewPropertyDetail(Long propertyId);
+
+
+    @PreAuthorize("hasRole('BUYER')")
+    List<Property> getFavoriteProperties();
+
 }
