@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>View Message</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <script th:src="@{/js/property-view.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div th:if="${successMessage}" class="success">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <h2>Message Details</h2>
+
+    <div>
+        <p><strong>Property:</strong> $<span th:text="${message.property.title}"></span></p>
+        <p><strong>From:</strong> <span th:text="${message.sender.firstName}+ ' ' + ${message.sender.lastName}"></span>
+        </p>
+        <p><strong>Sent At:</strong> <span th:text="${#temporals.format(m.timeStamp, 'yyyy-MM-dd HH:mm')}"></span> Sent
+            at</p>
+    </div>
+
+
+    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 20px">
+        <div>
+            <p><strong>Message:</strong>
+        </div>
+        <div>
+            <p th:text="${message.content}">Message content</p>
+        </div>
+
+        <div>
+            <p th:text="${message.content}">Message content</p>
+        </div>
+
+        <div>
+            <h3>Reply to Buyer</h3>
+            <p><strong>Your Reply:</strong>
+        </div>
+
+    </div>
+
+
+
+    <!-- Message Form -->
+    <div style="margin-top: 30px;">
+
+        <form th:action="@{/properties/replymessage/{id}(id=${message.id})}" method="post">
+            <label>
+                <textarea name="reply" rows="4" style="width: 100%;" placeholder="Your Reply"></textarea>
+            </label>
+            <br><br>
+            <button type="submit">Send Reply</button>
+        </form>
+        <br>
+        <a th:href="@{/messages/agent}">← Back to Messages</a>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>

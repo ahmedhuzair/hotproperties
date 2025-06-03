@@ -2,6 +2,7 @@ package com.hotproperties.hotproperties.controllers;
 
 
 import com.hotproperties.hotproperties.entities.Property;
+import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,10 +20,12 @@ public class AgentController {
 
     private final UserService userService;
     private final PropertyService propertyService;
+    private final MessageService messageService;
 
-    public AgentController(UserService userService, PropertyService propertyService) {
+    public AgentController(UserService userService, PropertyService propertyService, MessageService messageService) {
         this.userService = userService;
         this.propertyService = propertyService;
+        this.messageService = messageService;
     }
 
     // === PROPERTY ADDING BY AGENT ONLY ===
@@ -126,43 +129,37 @@ public class AgentController {
         }
         return "redirect:/properties/manage";
     }
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/messages/agent")
+    public String viewAllMessages(Model model) {
+        model.addAttribute("messages", messageService.getAllMessagesOfAgent());
+        return "/agent/view-all-messages";
+    }
 
-    //
-//    // === PROFILE PICTURE UPLOAD ===
-//    @PostMapping("/users/{id}/upload-profile-picture")
-//    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
-//    public String uploadProfilePicture(@PathVariable Long id,
-//                                       @RequestParam("file") MultipartFile file,
-//                                       RedirectAttributes redirectAttributes) {
-//        try {
-//            String filename = userService.storeProfilePicture(id, file);
-//            redirectAttributes.addFlashAttribute("message", "Profile picture uploaded: " + filename);
-//        } catch (Exception e) {
-//            redirectAttributes.addFlashAttribute("error", "Upload failed: " + e.getMessage());
-//        }
-//        return "redirect:/profile";
-//    }
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/messages/{message_id}")
+    public String viewMessageDetails(@PathVariable Long message_id, Model model) {
+        model.addAttribute("message", messageService.getMessageById(message_id));
+        return "/agent/view-message-details";
+    }
 
-//    @GetMapping("/profile-pictures/{filename:.+}")
-//    @ResponseBody
-//    public ResponseEntity<Resource> serveProfilePicture(@PathVariable String filename) {
-//        try {
-//            Path filePath = Paths.get("uploads/profile-pictures/").resolve(filename).normalize();
-//            Resource resource = new UrlResource(filePath.toUri());
-//
-//            if (resource.exists() && resource.isReadable()) {
-//                return ResponseEntity.ok()
-//                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-//                        .contentType(MediaTypeFactory.getMediaType(resource).orElse(MediaType.APPLICATION_OCTET_STREAM))
-//                        .body(resource);
-//            } else {
-//                return ResponseEntity.notFound().build();
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+    @PreAuthorize("hasRole('AGENT')")
+    @PostMapping("/properties/replymessage/{message_id}")
+    public String sendMessage(@PathVariable Long message_id,
+                              @RequestParam(required = false) String message,
+                              RedirectAttributes redirectAttributes) {
 
+        messageService.sendReplyToBuyer(message_id, message);
+        redirectAttributes.addFlashAttribute("successMessage", "Message sent successfully.");
+        return "redirect:/messages/agent/";
+    }
+
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/delete/message/agent/{messageId}")
+    public String deleteMessage(@PathVariable Long messageId) {
+        messageService.deleteMessageFromSender(messageId);
+        return "redirect:/messages/agent";
+    }
 
 }
 

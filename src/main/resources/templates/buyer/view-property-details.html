@@ -7,7 +7,9 @@
 </head>
 <body>
 <div class="container">
-
+    <div th:if="${successMessage}" class="success">
+        <p th:text="${successMessage}"></p>
+    </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h1 th:text="${property.title}">Property Title</h1>
@@ -51,7 +53,9 @@
     <div style="margin-top: 30px;">
         <h3>Contact the Agent</h3>
         <form th:action="@{/properties/message/{id}(id=${property.id})}" method="post">
-            <textarea name="message" rows="4" style="width: 100%;" placeholder="Your Message"></textarea>
+            <label>
+                <textarea name="message" rows="4" style="width: 100%;" placeholder="Your Message"></textarea>
+            </label>
             <br><br>
             <button type="submit">Send Message</button>
         </form>
