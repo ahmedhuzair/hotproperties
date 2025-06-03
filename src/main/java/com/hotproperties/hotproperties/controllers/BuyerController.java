@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class BuyerController {
@@ -23,7 +24,12 @@ public class BuyerController {
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/properties/list")
-    public String viewAllProperties(Model model) {
+    public String viewAllProperties(@RequestParam(required = false) String zip,
+                                    @RequestParam(required = false) Integer minSqFt,
+                                    @RequestParam(required = false) Integer minPrice,
+                                    @RequestParam(required = false) Integer maxPrice,
+                                    @RequestParam(required = false) String sort,
+                                    Model model) {
         model.addAttribute("properties", propertyService.getAllProperties());
         return "/buyer/browse-properties";
     }

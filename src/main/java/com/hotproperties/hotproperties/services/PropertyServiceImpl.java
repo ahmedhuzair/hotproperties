@@ -157,6 +157,11 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
+    public List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort) {
+        return List.of();
+    }
+
+    @Override
     @Transactional
     public void addPropertyToFavorites(Long propertyId) {
         User buyer = userService.getCurrentUser();

@@ -53,4 +53,6 @@ public interface PropertyService {
     @PreAuthorize("hasRole('BUYER')")
     List<Property> getFavoriteProperties();
 
+    @PreAuthorize("hasRole('BUYER')")
+    List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort);
 }

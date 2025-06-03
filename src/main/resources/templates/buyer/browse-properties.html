@@ -10,12 +10,12 @@
     <h1>Available Properties</h1>
 
     <form method="get" th:action="@{/properties/list}" style="margin-bottom: 20px;">
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div style="display: flex; gap: 10px; ">
             <input type="text" name="zip" placeholder="Zip Code" th:value="${zip}">
             <input type="number" name="minSqFt" placeholder="Min Sq Ft" th:value="${minSqFt}">
             <input type="number" name="minPrice" placeholder="Min Price" th:value="${minPrice}">
             <input type="number" name="maxPrice" placeholder="Max Price" th:value="${maxPrice}">
-            <select name="sortBy">
+            <select name="sort">
                 <option value="asc" th:selected="${sortBy == 'asc'}">Price: Low to High</option>
                 <option value="desc" th:selected="${sortBy == 'desc'}">Price: High to Low</option>
             </select>
