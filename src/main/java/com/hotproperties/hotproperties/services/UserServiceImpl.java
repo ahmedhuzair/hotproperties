@@ -2,6 +2,7 @@ package com.hotproperties.hotproperties.services;
 
 import com.hotproperties.hotproperties.entities.Role;
 import com.hotproperties.hotproperties.entities.User;
+import com.hotproperties.hotproperties.exceptions.AdminDeletionNotAllowedException;
 import com.hotproperties.hotproperties.exceptions.AlreadyExistsException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.UserRepository;
@@ -101,6 +102,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUserByEmail(String email) {
+        User user = getCurrentUserContext().user();
+        if (user.getEmail().equals(email)) {
+            throw new AdminDeletionNotAllowedException("Admin cannot delete themselves.");
+        }
         if (!userRepository.existsByEmail(email)) {
             throw new NotFoundException("User with email " + email + " does not exist");
         }
