@@ -17,5 +17,5 @@ public interface MessageService {
 
     Message getMessageById(Long messageId);
 
-    void deleteMessageFromSender(Long messageId);
+    void deleteMessageFromAgent(Long messageId);
 }

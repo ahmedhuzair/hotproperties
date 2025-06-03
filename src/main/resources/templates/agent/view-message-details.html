@@ -14,22 +14,17 @@
     <h2>Message Details</h2>
 
     <div>
-        <p><strong>Property:</strong> $<span th:text="${message.property.title}"></span></p>
+        <p><strong>Property:</strong> <span th:text="${message.property.title}"></span></p>
         <p><strong>From:</strong> <span th:text="${message.sender.firstName}+ ' ' + ${message.sender.lastName}"></span>
         </p>
-        <p><strong>Sent At:</strong> <span th:text="${#temporals.format(m.timeStamp, 'yyyy-MM-dd HH:mm')}"></span> Sent
-            at</p>
+        <p><strong>Sent At:</strong> <span th:text="${#temporals.format(message.timeStamp, 'yyyy-MM-dd HH:mm')}"></span> </p>
     </div>
 
 
-    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 20px">
+    <div style=" display: flex; flex-direction: column; ">
         <div>
             <p><strong>Message:</strong>
         </div>
-        <div>
-            <p th:text="${message.content}">Message content</p>
-        </div>
-
         <div>
             <p th:text="${message.content}">Message content</p>
         </div>
@@ -40,8 +35,6 @@
         </div>
 
     </div>
-
-
 
     <!-- Message Form -->
     <div style="margin-top: 30px;">

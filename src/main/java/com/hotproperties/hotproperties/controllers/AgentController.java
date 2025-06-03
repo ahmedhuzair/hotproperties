@@ -145,19 +145,19 @@ public class AgentController {
 
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/properties/replymessage/{message_id}")
-    public String sendMessage(@PathVariable Long message_id,
-                              @RequestParam(required = false) String message,
+    public String sendReplyToBuyer(@PathVariable Long message_id,
+                                   @RequestParam("reply") String message,
                               RedirectAttributes redirectAttributes) {
 
         messageService.sendReplyToBuyer(message_id, message);
-        redirectAttributes.addFlashAttribute("successMessage", "Message sent successfully.");
-        return "redirect:/messages/agent/";
+        redirectAttributes.addFlashAttribute("successMessage", "Reply sent successfully.");
+        return "redirect:/messages/agent";
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/delete/message/agent/{messageId}")
     public String deleteMessage(@PathVariable Long messageId) {
-        messageService.deleteMessageFromSender(messageId);
+        messageService.deleteMessageFromAgent(messageId);
         return "redirect:/messages/agent";
     }
 

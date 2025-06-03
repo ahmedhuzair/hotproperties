@@ -35,18 +35,6 @@ public class MessageServiceImpl implements MessageService {
         messageRepository.save(messageToSend);
     }
 
-    @Override
-    @Transactional
-    public void deleteMessageFromBuyer(Long messageId) {
-        Message message = messageRepository.findById(messageId)
-                .orElseThrow(() -> new NotFoundException("Message not found"));
-
-        User buyer = message.getSender();
-        Property property = message.getProperty();
-        buyer.getMessages().remove(message);
-
-    }
-
 
     @Override
     public List<Message> getAllMessagesOfBuyer() {
@@ -67,6 +55,7 @@ public class MessageServiceImpl implements MessageService {
                 .orElseThrow(() -> new NotFoundException("Message not found"));
 
         replyMessage.setReply(message);
+        System.out.println("Reply message: " + message);
 
         messageRepository.save(replyMessage);
     }
@@ -77,18 +66,28 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundException("Message not found"));
     }
-
     @Override
-    public void deleteMessageFromSender(Long messageId) {
+    @Transactional
+    public void deleteMessageFromBuyer(Long messageId) {
         Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundException("Message not found"));
 
-        Property property = message.getProperty();
-        User agent = userService.getCurrentUser();
+        User buyer = userService.getCurrentUser();
+        buyer.getMessages().remove(message);
 
-        if (!property.getAgent().getId().equals(agent.getId())) {
-            throw new RuntimeException("Access denied.");
-        }
-        property.getMessages().remove(message);
     }
+
+    @Override
+    @Transactional
+    public void deleteMessageFromAgent(Long messageId) {
+        Message message = messageRepository.findById(messageId)
+                .orElseThrow(() -> new NotFoundException("Message not found"));
+        User agent = userService.getCurrentUser();
+        Property property = message.getProperty();
+        agent.getMessages().remove(message);
+
+
+
+    }
+
 }
