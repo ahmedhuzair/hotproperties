@@ -29,7 +29,7 @@
     <div style="display: flex; flex-direction: column; gap: 0.4rem;">
         <div style="display: flex;">
             <strong style="width: 6rem;">Price:</strong>
-            <span>$<span th:text="${property.price}"></span></span>
+            <span><span th:text="${'$' + #numbers.formatDecimal(property.price, 0, 'COMMA', 0, 'POINT')}"></span></span>
         </div>
         <div style="display: flex;">
             <strong style="width: 6rem;">Location:</strong>
@@ -37,7 +37,7 @@
         </div>
         <div style="display: flex;">
             <strong style="width: 6rem;">Size:</strong>
-            <span><span th:text="${property.size}"></span> sq ft</span>
+            <span><span th:text="${#numbers.formatDecimal(property.size, 0, 'COMMA', 0, 'POINT')}"></span> sq ft</span>
         </div>
     </div>
 

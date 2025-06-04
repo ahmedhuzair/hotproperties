@@ -53,7 +53,7 @@ public class AgentController {
             return "redirect:/properties/manage";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to add property. Please try again." + e.getMessage());
-            return "redirect:/properties/manage";
+            return "redirect:/properties/add";
         }
     }
 

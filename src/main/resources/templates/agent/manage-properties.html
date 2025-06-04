@@ -30,9 +30,9 @@
         <tbody>
         <tr th:each="p : ${properties}">
             <td th:text="${p.title}">Title</td>
-            <td th:text="'$' + ${p.price}">Price</td>
+            <td th:text="${'$' + #numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')}">Price</td>
             <td th:text="${p.location}">Location</td>
-            <td th:text="${p.size}">Size</td>
+            <td th:text="${#numbers.formatDecimal(p.size, 0, 'COMMA', 0, 'POINT') + ' sq ft'}">Size</td>
             <td>
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div th:each="img : ${p.images}" style="margin-bottom: 10px;">

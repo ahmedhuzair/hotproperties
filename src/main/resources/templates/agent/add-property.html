@@ -8,6 +8,9 @@
 <body>
 <div th:replace="fragments/fragments :: navbar(true)"></div>
 <div class="container" style="margin-inline: 12rem">
+    <div th:if="${errorMessage}" class="failure">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <h1>Add New Property</h1>
 <div>
 

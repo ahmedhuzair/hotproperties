@@ -47,6 +47,9 @@ public class PropertyServiceImpl implements PropertyService {
                 || property.getSize() == null) {
             throw new InvalidPropertyParameterException("Title, price, location, and size are required.");
         }
+        if(propertyRepository.existsByTitle(property.getTitle())) {
+            throw new InvalidPropertyParameterException(" Property already exists.");
+        }
         User agent = userService.getCurrentUser();
         property.setAgent(agent);
         return propertyRepository.save(property);
@@ -163,7 +166,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void storePropertyImages(Long id, List<MultipartFile> images) {
+    public void storePropertyImages(Long propertyId, List<MultipartFile> images) {
         if (images == null || images.isEmpty()) {
             throw new InvalidPropertyImageParameterException("No image files provided.");
         }
@@ -173,7 +176,11 @@ public class PropertyServiceImpl implements PropertyService {
             Files.createDirectories(uploadPath);  // Ensure path exists
 
             // Locate property
-            Property property = propertyRepository.findById(id).orElseThrow(() -> new NotFoundException("Property not found"));
+            if (!propertyRepository.existsById(propertyId)) {
+                throw new InvalidPropertyImageParameterException("Property not found for image.");
+            }
+
+            Property property = propertyRepository.getById(propertyId);
 
             for (MultipartFile image : images) {
                 if (image != null && !image.isEmpty()) {
