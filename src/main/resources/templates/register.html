@@ -6,7 +6,13 @@
     <link rel="stylesheet" th:href="@{/css/login.css}"/>
 </head>
 <body>
-<div class="container">
+<nav class="navbar">
+    <div class="navbar-content">
+        <img src="/Users/santhan1400/Documents/assignments/3rd quarter/oops/final_project/hotproperties/src/main/resources/static/images/logo.png" alt="Logo" class="logo">
+    </div>
+</nav>
+<div class="login-container">
+    <div class="welcome-box">
     <h1>Create Buyer Account</h1>
     <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
     <div class="success" th:if="${successMessage}" th:text="${successMessage}"></div>
@@ -35,6 +41,7 @@
     <div class="back-link">
         <a th:href="@{/login}">← Back to Login</a>
     </div>
+</div>
 </div>
 </body>
 </html>

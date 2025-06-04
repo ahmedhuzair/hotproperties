@@ -6,7 +6,13 @@
     <link rel="stylesheet" th:href="@{/css/login.css}"/>
 </head>
 <body>
+<nav class="navbar">
+    <div class="navbar-content">
+        <img src="/Users/santhan1400/Documents/assignments/3rd quarter/oops/final_project/hotproperties/src/main/resources/static/images/logo.png" alt="Logo" class="logo">
+    </div>
+</nav>
 <div class="login-container">
+    <div class="welcome-box">
     <h1>Edit Profile</h1>
 
     <form class="section-spacing" method="post" th:action="@{/profile/edit}" enctype="multipart/form-data">
@@ -37,6 +43,7 @@
     </form>
 
 
+</div>
 </div>
 </body>
 </html>
