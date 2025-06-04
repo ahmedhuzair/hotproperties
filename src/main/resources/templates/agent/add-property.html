@@ -3,44 +3,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add Property</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar(false)"></div>
-<div class="login-container">
+<div th:replace="fragments/fragments :: navbar(true)"></div>
+<div class="container" style="margin-inline: 12rem">
     <h1>Add New Property</h1>
+<div>
 
-    <form method="post" th:action="@{/properties/add}" th:object="${property}" enctype="multipart/form-data">
 
-        <label for="title">Title</label>
+    <form style="display: flex; flex-direction: column; gap: 0.4rem;" method="post" th:action="@{/properties/add}" th:object="${property}" enctype="multipart/form-data">
+
+        <label for="title">Title:</label>
         <input id="title" required="" th:field="*{title}" type="text"/>
 
-        <label for="price">Price</label>
+        <label for="price">Price:</label>
         <input id="price" required="" th:field="*{price}" type="number"/>
 
-        <label for="location">Location</label>
+        <label for="location">Location:</label>
         <input id="location" required="" th:field="*{location}" type="text"/>
 
-        <label for="size">Size (sq ft)</label>
+        <label for="size">Size (sq ft):</label>
         <input id="size" required="" th:field="*{size}" type="number"/>
 
-        <label for="description">Description</label>
-<!--        <input id="description" required="" th:field="*{description}" type="text"/>-->
+        <label style="margin-top: 0.5rem" for="description" >Description:</label>
         <textarea id="description" required="" th:field="*{description}" rows="4" cols="50"></textarea>
 
-        <label for="propertyPictures">Upload Property Images</label>
+        <label style="margin-top: 0.5rem" for="propertyPictures">Upload Property Images</label>
         <input id="propertyPictures" type="file" name="files" accept="image/*" multiple/>
 
         <br/><br/>
 
-        <button class="add-property-btn"  type="submit">Add Property</button>
+        <button class="add-property-btn" type="submit">Add Property</button>
 
         <div class="back-link">
             <a th:href="@{/dashboard}">← Back to Dashboard</a>
         </div>
 
     </form>
-
+</div>
 </div>
 </body>
 </html>

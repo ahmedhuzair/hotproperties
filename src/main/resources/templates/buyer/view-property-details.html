@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:text="${property.title}">Property Details</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
     <script th:src="@{/js/property-view.js}"></script>
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(true)}"></div>
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
 <div class="container">
     <div th:if="${successMessage}" class="success">
         <p th:text="${successMessage}"></p>
@@ -26,21 +26,32 @@
     </div>
 
 
-    <div>
-        <p><strong>Price:</strong> $<span th:text="${property.price}"></span></p>
-        <p><strong>Location:</strong> <span th:text="${property.location}"></span></p>
-        <p><strong>Size:</strong> <span th:text="${property.size}"></span> sq ft</p>
+    <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+        <div style="display: flex;">
+            <strong style="width: 6rem;">Price:</strong>
+            <span>$<span th:text="${property.price}"></span></span>
+        </div>
+        <div style="display: flex;">
+            <strong style="width: 6rem;">Location:</strong>
+            <span th:text="${property.location}"></span>
+        </div>
+        <div style="display: flex;">
+            <strong style="width: 6rem;">Size:</strong>
+            <span><span th:text="${property.size}"></span> sq ft</span>
+        </div>
     </div>
+
+
 
     <!-- Property Description -->
     <div style="margin-top: 20px;">
         <h3>Description:</h3>
-        <p th:text="${property.description}">Property description</p>
+        <p  style="margin-top: 0.5rem" th:text="${property.description}">Property description</p>
     </div>
 
     <!-- Property Images -->
     <div style="margin-top: 20px;">
-        <h3>Property Images</h3>
+        <h3 style="margin-bottom: 0.5rem">Property Images</h3>
         <div th:each="img, iterStat : ${property.images}" style="margin-bottom: 10px;">
             <img th:src="@{'/property-images/' + ${img.imageFileName}}"
                  alt="Property Image"
@@ -51,14 +62,16 @@
     </div>
 
     <!-- Message Form -->
-    <div style="margin-top: 30px;">
-        <h3>Contact the Agent</h3>
+    <div style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 0.8rem">Contact the Agent</h3>
+        <p style="margin-bottom: 0.8rem">Your Message:</p>
+
         <form th:action="@{/properties/message/{id}(id=${property.id})}" method="post">
             <label>
-                <textarea name="message" rows="4" style="width: 100%;" placeholder="Your Message"></textarea>
+                <textarea name="message" rows="4" style="width: 100%;" ></textarea>
             </label>
             <br><br>
-            <button type="submit">Send Message</button>
+            <button style="width: max-content" type="submit">Send Message</button>
         </form>
         <br>
         <a th:href="@{/properties/list}">← Back to Listings</a>

@@ -17,12 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BuyerController {
 
     private final PropertyService propertyService;
-    private final UserService userService;
     private final MessageService messageService;
 
     public BuyerController(PropertyService propertyService, UserService userService, MessageService messageService) {
         this.propertyService = propertyService;
-        this.userService = userService;
         this.messageService = messageService;
     }
 
@@ -35,15 +33,11 @@ public class BuyerController {
                                     @RequestParam(required = false) String sort,
                                     Model model) {
         model.addAttribute("properties", propertyService.getAllProperties());
+        model.addAttribute("propertyCount", propertyService.getAllProperties().size());
+
         return "/buyer/browse-properties";
     }
 
-    @PreAuthorize("hasRole('BUYER')")
-    @GetMapping("/favorites")
-    public String viewFavoriteProperties(Model model) {
-        model.addAttribute("properties", propertyService.getFavoriteProperties());
-        return "/buyer/saved-favorites";
-    }
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/properties/view/{property_id}")
@@ -54,52 +48,6 @@ public class BuyerController {
         return "/buyer/view-property-details";
     }
 
-    @PreAuthorize("hasRole('BUYER')")
-    @GetMapping("/favorites/add/{property_id}")
-    public String addFavorite(@PathVariable Long property_id) {
-        propertyService.addPropertyToFavorites(property_id);
-        return "redirect:/properties/view/{property_id}";
-    }
 
-    @PreAuthorize("hasRole('BUYER')")
-    @GetMapping("/favorites/remove/{property_id}")
-    public String removeFavoriteFromPropertyDetailsPage(@PathVariable Long property_id) {
-        propertyService.removePropertyFromFavorites(property_id);
-        return "redirect:/properties/view/{property_id}";
-    }
-
-    @PreAuthorize("hasRole('BUYER')")
-    @GetMapping("/favorites/remove/favoritesPage/{property_id}")
-    public String removeFavoriteFromFavoritesPage(@PathVariable Long property_id) {
-        propertyService.removePropertyFromFavorites(property_id);
-        return "redirect:/favorites";
-    }
-
-    @PreAuthorize("hasRole('BUYER')")
-    @PostMapping("/properties/message/{property_id}")
-    public String sendMessage(@PathVariable Long property_id,
-                              @RequestParam(required = false) String message,
-                              RedirectAttributes redirectAttributes) {
-
-        messageService.sendMessageToAgent(property_id, message);
-        redirectAttributes.addFlashAttribute("successMessage", "Message sent successfully.");
-        return "redirect:/properties/view/" + property_id;
-    }
-
-
-
-    @PreAuthorize("hasRole('BUYER')")
-    @GetMapping("/messages/buyer")
-    public String viewMessages(Model model) {
-        model.addAttribute("messages", messageService.getAllMessagesOfBuyer());
-        return "/buyer/view-all-messages";
-    }
-
-    @PreAuthorize("hasRole('BUYER')")
-    @GetMapping("/delete/message/{messageId}")
-    public String deleteMessage(@PathVariable Long messageId) {
-        messageService.deleteMessageFromBuyer(messageId);
-        return "redirect:/messages/buyer";
-    }
 
 }

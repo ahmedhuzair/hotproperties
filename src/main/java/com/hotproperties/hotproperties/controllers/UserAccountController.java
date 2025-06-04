@@ -8,9 +8,6 @@ import com.hotproperties.hotproperties.services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -102,7 +99,6 @@ public class UserAccountController {
             // Copy updates from form-bound user
             actualUser.setFirstName(updatedUser.getFirstName());
             actualUser.setLastName(updatedUser.getLastName());
-//            actualUser.setEmail(updatedUser.getEmail());
 
             userService.updateUserProfile(actualUser);
 

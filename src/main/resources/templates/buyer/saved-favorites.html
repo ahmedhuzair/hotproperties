@@ -2,32 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>My Favorites</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(true)}"></div>
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
 <div class="container">
 
     <h1>My Favorite Properties</h1>
 
 
     <div th:each="p : ${properties}" class="property-card"
-         style="display: flex; border: 1px solid #ccc; border-radius: 4px; padding: 15px; gap: 20px; margin-bottom: 15px; align-items: stretch;">
+         style="display: flex; border-bottom: 1px solid #ccc; padding: 15px; gap: 20px; margin-bottom: 15px; align-items: stretch;">
 
         <!-- Image Section -->
         <div th:if="${not #lists.isEmpty(p.images)}" style="flex-shrink: 0;">
             <img th:src="@{'/property-images/' + ${p.images[0].imageFileName}}"
                  alt="Property Image"
-                 style="width: 220px; height: 100%; object-fit: cover; border-radius: 4px;" />
+                 style="width: 180px; height: 100%; object-fit: cover; border-radius: 4px;" />
         </div>
 
         <!-- Details Section -->
         <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <h3 style="color: #007BFF; margin-top: 0;" th:text="${p.title}">Property Title</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.5rem">
+                <h3 style="color: #007BFF; margin-bottom: 0.6rem;" th:text="${p.title}">Property Title</h3>
                 <p><strong>Price:</strong> $<span th:text="${p.price}"></span></p>
                 <p><strong>Location:</strong> <span th:text="${p.location}"></span></p>
-                <p><strong>Sq. Ft.:</strong> <span th:text="${p.size}"></span></p>
+                <p><strong>Size:</strong> <span th:text="${p.size + ' sq ft'}"></span></p>
             </div>
 
 
@@ -38,7 +38,7 @@
                 <a
                    th:href="@{/favorites/remove/favoritesPage/{id}(id=${p.id})}">
                     <button type="button" class="red"
-                            onclick="return confirm('Are you sure you want to remove this property from Favorites?')">Remove from Favorites</button>
+                            onclick="return confirm('Are you sure you want to remove this property from Favorites?')">Remove</button>
                 </a>
             </div>
         </div>

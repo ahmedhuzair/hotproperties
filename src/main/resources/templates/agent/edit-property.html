@@ -3,14 +3,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Property</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(false)}"></div>
-<div class="login-container">
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
+<div class="container">
     <h1>Edit Property</h1>
 
-    <form class="section-spacing" method="post" th:action="@{/properties/edit/{property_id}(property_id=${property.id})}" enctype="multipart/form-data">
+    <form style="display: flex; flex-direction: column; gap: 0.4rem;" class="section-spacing" method="post" th:action="@{/properties/edit/{property_id}(property_id=${property.id})}" enctype="multipart/form-data">
                     <label for="title">Title:</label>
                     <input id="title" name="title" required="" th:value="${property.title}" type="text"/>
         
@@ -26,7 +26,7 @@
                     <label for="description">Description:</label>
                     <textarea id="description" required="" th:field="${property.description}" rows="4" cols="50"></textarea>
 
-                    <label for="propertyPictures">Images:</label>
+                    <label for="propertyPictures">Add New Images (optional):</label>
                     <input id="propertyPictures" type="file" name="files" accept="image/*" multiple/>
 
         <div style="display: flex; justify-content: space-between; margin-top: 20px;">
@@ -40,8 +40,8 @@
     </form>
 
     <div th:if="${property.images}">
-        <div style="margin-top: 10px;">
-            <p style="font-weight: bold">Existing Images</p>
+        <div style="margin-top: 2rem;">
+            <p style="margin-bottom:2rem; font-weight: bold">Existing Images</p>
             <div th:each="img : ${property.images}" style="margin-bottom: 10px; display: flex; align-items: center; gap: 16px;">
                 <img th:src="@{'/property-images/' + ${img.imageFileName}}"
                      alt="Property Image"

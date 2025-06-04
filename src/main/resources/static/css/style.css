@@ -1,37 +1,37 @@
 /* Ensure the full page uses flexbox to center content */
 * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .navbar {
-            width: 100%;
-            background: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+.navbar {
+    width: 100%;
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-        .navbar-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 100%;
-        }
+.navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+}
 
-        .logo {
-            height: 100px;
-            width: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
+.logo {
+    height: 100px;
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
 
-        .navbar img {
-          height: 100px;
-        }
+.navbar img {
+    height: 100px;
+}
 
 body {
     font-family: Arial, sans-serif;
@@ -41,7 +41,13 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-image: url('/images/house-bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
+
 
 form label {
     display: block;
@@ -50,23 +56,31 @@ form label {
     text-align: left;
 }
 
+.container {
+    background-color: white;
+    margin-top: 2rem;
+    margin-inline: 3rem;
+    padding: 2rem;
+    border-radius: 4px
+}
+
 .login-container {
-flex: 1;
+    flex: 1;
     display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 2rem;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
 }
 
 .welcome-box {
-            background: white;
-            border-radius: 12px;
-            padding: 2.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-        }
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
 
 .roles-list {
     list-style-type: none;
@@ -104,12 +118,14 @@ label {
     margin-bottom: 14px;
     text-align: center;
 }
+
 .failure {
     color: red;
     font-size: 0.95em;
     margin-bottom: 14px;
     text-align: center;
 }
+
 input[type="email"],
 input[type="text"],
 input[type="password"] {
@@ -183,19 +199,21 @@ button:hover {
 }
 
 ul li {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 table {
     border-spacing: 0 12px;
 
-        border-collapse: collapse;
-        width: 100%;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 th, td {
     padding: 10px 10px;
-    vertical-align: middle;
+    vertical-align: top;
+    horiz-align: left;
+    text-align: left;
     border: 1px solid #ccc;
 }
 
@@ -205,6 +223,7 @@ tr {
 
 .profile-table, .profile-table td, .profile-table tr {
     border: none;
+    padding: 0.4rem 0;
 }
 
 .back-link {
@@ -219,7 +238,7 @@ tr {
     height: auto;
 }
 
-button.add-property-btn{
+button.add-property-btn {
     width: 100%;
     padding: 10px;
     background-color: green;
@@ -230,11 +249,37 @@ button.add-property-btn{
     cursor: pointer;
 }
 
-button.add-property-btn:hover{
+button.add-property-btn:hover {
     background-color: darkgreen;
 }
 
-.centered-link { text-align: center; margin-top: 20px; }
-.checkbox-margin { margin-right: 6px; }
-.profile-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-.section-spacing { margin-top: 20px; }
+.centered-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.checkbox-margin {
+    margin-right: 6px;
+}
+
+.profile-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.section-spacing {
+    margin-top: 20px;
+}
+
+
+a {
+    text-decoration: none;
+    color: #003366;
+    font-weight:bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #001F4D; /* slightly darker on hover */
+}

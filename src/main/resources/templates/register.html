@@ -3,11 +3,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(false)}"></div>
-<div class="login-container">
+<div th:replace="~{fragments/fragments :: navbar(false)}"></div>
+<div class="login-container" style="margin-bottom: 25rem">
     <div class="welcome-box">
     <h1>Create Buyer Account</h1>
     <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>

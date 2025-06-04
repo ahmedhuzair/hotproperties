@@ -3,16 +3,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Profile</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(false)}"></div>
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
 <div class="login-container">
     <div class="welcome-box">
     <h1>Edit Profile</h1>
 
     <form class="section-spacing" method="post" th:action="@{/profile/edit}" enctype="multipart/form-data">
-        <table class="inline-style-4">
+        <table class="profile-table" >
             <tr>
                 <td><label for="firstName">First Name:</label></td>
                 <td><input id="firstName" name="firstName" required="" th:value="${user.firstName}" type="text"/></td>
@@ -33,7 +33,7 @@
                 <button type="submit">Save Changes</button>
             </a>
             <a th:href="@{/profile}">
-                <button type="button">Cancel</button>
+                <button type="button" style="background-color: gray;">Cancel</button>
             </a>
         </div>
     </form>

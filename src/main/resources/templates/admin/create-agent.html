@@ -3,11 +3,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Agent</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar(true)"></div>
-<div class="container">
+<div th:replace="fragments/fragments :: navbar(true)"></div>
+<div class="container" style="width: 50%; align-self: center">
     <h1>Create a New Agent</h1>
 
     <form method="post" th:action="@{/users/admin/create-agent}" th:object="${user}" enctype="multipart/form-data">

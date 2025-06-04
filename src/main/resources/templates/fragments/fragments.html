@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
 </head>
 <body>
-<nav class="navbar" th:fragment="navbar(showButton)">
+<div class="navbar" th:fragment="navbar(showDashboardButton)">
   <div class="navbar-content">
     <img th:src="@{/images/logo.png}" alt="Logo" class="logo">
-    <div th:if="${showButton}" class="navbar-actions">
+    <div th:if="${showDashboardButton}" class="navbar-actions">
       <a th:href="@{/dashboard}">
-      <button type="button" class="navbar-btn">Go to Dashboard</button>
+      <button type="button" class="navbar-btn"> ←  Dashboard</button>
       </a>
     </div>
   </div>
-</nav>
+</div>
 </body>
 </html>

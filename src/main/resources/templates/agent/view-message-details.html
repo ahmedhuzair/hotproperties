@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>View Message</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <script th:src="@{/js/property-view.js}"></script>
 </head>
 <body>
-<div class="container">
+<div class="container" style="display: flex; flex-direction: column; gap: 1rem; margin-inline: 10rem; padding-bottom:10rem ">
     <div th:if="${successMessage}" class="success">
         <p th:text="${successMessage}"></p>
     </div>
@@ -14,44 +14,45 @@
     <h2>Message Details</h2>
 
     <div>
-        <p><strong>Property:</strong> <span th:text="${message.property.title}"></span></p>
-        <p><strong>From:</strong> <span th:text="${message.sender.firstName}+ ' ' + ${message.sender.lastName}"></span>
-        </p>
-        <p><strong>Sent At:</strong> <span th:text="${#temporals.format(message.timeStamp, 'yyyy-MM-dd HH:mm')}"></span> </p>
-    </div>
-
-
-    <div style=" display: flex; flex-direction: column; ">
-        <div>
-            <p><strong>Message:</strong>
-        </div>
-        <div>
-            <p th:text="${message.content}">Message content</p>
-        </div>
-
-        <div>
-            <h3>Reply to Buyer</h3>
-            <p><strong>Your Reply:</strong>
+        <div style="color: gray; display: flex; flex-direction: column; gap: 0.3rem">
+            <p><strong>Property:</strong> <span th:text="${message.property.title}"></span></p>
+            <p><strong>From:</strong> <span
+                    th:text="${message.sender.firstName}+ ' ' + ${message.sender.lastName}"></span>
+            </p>
+            <p><strong>Sent At:</strong> <span
+                    th:text="${#temporals.format(message.timeStamp, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
         </div>
 
     </div>
+
+    <hr>
+
+    <div style="color: gray; display: flex; flex-direction: column; gap: 0.3rem">
+        <p><strong>Message:</strong>
+        <p th:text="${message.content}">Message content</p>
+    </div>
+
+    <hr>
+
+    <div style=" display: flex; flex-direction: column; gap: 0.5rem">
+        <h3>Reply to Buyer</h3>
+        <p><strong>Your Reply:</strong>
 
     <!-- Message Form -->
-    <div style="margin-top: 30px;">
-
         <form th:action="@{/properties/replymessage/{id}(id=${message.id})}" method="post">
             <label>
-                <textarea name="reply" rows="4" style="width: 100%;" placeholder="Your Reply"></textarea>
+                <textarea name="reply" rows="4" style="width: 100%;"></textarea>
             </label>
             <br><br>
-            <button type="submit">Send Reply</button>
+            <button style="width: max-content" type="submit">Send Reply</button>
         </form>
-        <br>
-        <a th:href="@{/messages/agent}">← Back to Messages</a>
     </div>
+        <br>
+        <a style="text-align: center" th:href="@{/messages/agent}">← Back to Messages</a>
+
 
 </div>
-
 
 
 </body>

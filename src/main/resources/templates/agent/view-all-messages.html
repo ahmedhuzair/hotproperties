@@ -3,11 +3,16 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Your Property Messages</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
+
 <div class="container">
-    <div th:if="${successMessage}" class="success">
+    <div th:if="${successMessage}" class="success"
+         style="background-color: #d4edda; color: #155724;
+            padding: 8px 5px; border-radius: 5px;
+            width: max-content; margin: 5px auto;">
         <p th:text="${successMessage}"></p>
     </div>
     <div th:if="${errorMessage}" class="failure">
@@ -15,7 +20,7 @@
     </div>
     <h1>Messages from Interested Buyers</h1>
     <table>
-        <thead>
+        <thead style="background-color: lightgrey">
         <tr>
             <th>Property</th>
             <th>Buyer</th>

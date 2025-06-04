@@ -129,37 +129,7 @@ public class AgentController {
         }
         return "redirect:/properties/manage";
     }
-    @PreAuthorize("hasRole('AGENT')")
-    @GetMapping("/messages/agent")
-    public String viewAllMessages(Model model) {
-        model.addAttribute("messages", messageService.getAllMessagesOfAgent());
-        return "/agent/view-all-messages";
-    }
 
-    @PreAuthorize("hasRole('AGENT')")
-    @GetMapping("/messages/{message_id}")
-    public String viewMessageDetails(@PathVariable Long message_id, Model model) {
-        model.addAttribute("message", messageService.getMessageById(message_id));
-        return "/agent/view-message-details";
-    }
-
-    @PreAuthorize("hasRole('AGENT')")
-    @PostMapping("/properties/replymessage/{message_id}")
-    public String sendReplyToBuyer(@PathVariable Long message_id,
-                                   @RequestParam("reply") String message,
-                              RedirectAttributes redirectAttributes) {
-
-        messageService.sendReplyToBuyer(message_id, message);
-        redirectAttributes.addFlashAttribute("successMessage", "Reply sent successfully.");
-        return "redirect:/messages/agent";
-    }
-
-    @PreAuthorize("hasRole('AGENT')")
-    @GetMapping("/delete/message/agent/{messageId}")
-    public String deleteMessage(@PathVariable Long messageId) {
-        messageService.deleteMessageFromAgent(messageId);
-        return "redirect:/messages/agent";
-    }
 
 }
 

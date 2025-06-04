@@ -3,6 +3,7 @@ package com.hotproperties.hotproperties.services;
 import com.hotproperties.hotproperties.entities.Message;
 import com.hotproperties.hotproperties.entities.Property;
 import com.hotproperties.hotproperties.entities.User;
+import com.hotproperties.hotproperties.exceptions.InvalidMessageParameterException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.FavoriteRepository;
 import com.hotproperties.hotproperties.repositories.MessageRepository;
@@ -29,8 +30,19 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void sendMessageToAgent(Long property_id, String message) {
+
         User sender = userService.getCurrentUser();
         Property property = propertyRepository.findById(property_id).orElseThrow(() -> new NotFoundException("Property not found"));
+        if (message == null || message.isEmpty()) {
+            throw new InvalidMessageParameterException("Message content must not be empty.");
+        }
+        if (sender == null) {
+            throw new InvalidMessageParameterException("Sender must not be null.");
+        }
+        if (property == null) {
+            throw new InvalidMessageParameterException("Property not found.");
+        }
+
         Message messageToSend = new Message(message, property, sender);
         messageRepository.save(messageToSend);
     }
@@ -55,7 +67,9 @@ public class MessageServiceImpl implements MessageService {
                 .orElseThrow(() -> new NotFoundException("Message not found"));
 
         replyMessage.setReply(message);
-        System.out.println("Reply message: " + message);
+        if (message == null || message.isEmpty()) {
+            throw new InvalidMessageParameterException("Message content must not be empty.");
+        }
 
         messageRepository.save(replyMessage);
     }

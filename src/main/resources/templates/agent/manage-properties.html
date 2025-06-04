@@ -3,10 +3,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Manage Properties</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(false)}"></div>
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
 <div class="container">
     <div th:if="${successMessage}" class="success">
         <p th:text="${successMessage}"></p>
@@ -16,7 +16,7 @@
     </div>
     <h1>Manage Your Properties</h1>
     <table>
-        <thead>
+        <thead style="background-color: lightgrey">
         <tr>
             <th>Title</th>
             <th>Price</th>
@@ -30,7 +30,7 @@
         <tbody>
         <tr th:each="p : ${properties}">
             <td th:text="${p.title}">Title</td>
-            <td th:text="${p.price}">Price</td>
+            <td th:text="'$' + ${p.price}">Price</td>
             <td th:text="${p.location}">Location</td>
             <td th:text="${p.size}">Size</td>
             <td>
