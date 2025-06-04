@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class BuyerController {
 
@@ -30,9 +32,17 @@ public class BuyerController {
                                     @RequestParam(required = false) Integer maxPrice,
                                     @RequestParam(required = false) String sort,
                                     Model model) {
-        model.addAttribute("properties", propertyService.getAllProperties());
+
+        List<Property> properties = propertyService.getFilteredProperties(zip, minSqFt, minPrice, maxPrice, sort);
+        model.addAttribute("properties", properties);
+        model.addAttribute("zip", zip);
+        model.addAttribute("minSqFt", minSqFt);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("sortBy", sort);
         return "/buyer/browse-properties";
     }
+
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/favorites")

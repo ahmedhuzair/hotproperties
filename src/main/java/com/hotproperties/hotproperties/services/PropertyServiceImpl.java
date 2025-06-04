@@ -166,8 +166,59 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort) {
-        return List.of();
+        // Handle nulls
+        String locationFilter;
+        if (zip == null || zip.isEmpty()) {
+            locationFilter = "";
+        } else {
+            locationFilter = zip;
+        }
+
+        Integer minSqFtFilter;
+        if (minSqFt == null) {
+            minSqFtFilter = 0;
+        } else {
+            minSqFtFilter = minSqFt;
+        }
+
+        Double minPriceFilter;
+        if (minPrice == null) {
+            minPriceFilter = 0.0;
+        } else {
+            minPriceFilter = minPrice.doubleValue();
+        }
+
+        Double maxPriceFilter;
+        if (maxPrice == null) {
+            maxPriceFilter = Double.MAX_VALUE;
+        } else {
+            maxPriceFilter = maxPrice.doubleValue();
+        }
+
+
+
+
+        boolean sortDesc = "desc".equalsIgnoreCase(sort);
+
+        // Full filter applied
+        if (!locationFilter.isEmpty() || minSqFt != null || minPrice != null || maxPrice != null) {
+            if (sortDesc) {
+                return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
+                        locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+                );
+            } else {
+                return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
+                        locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+                );
+            }
+        }
+
+        // No filters applied: return all sorted
+        return sortDesc ?
+                propertyRepository.findAllByOrderByPriceDesc() :
+                propertyRepository.findAllByOrderByPriceAsc();
     }
+
 
     @Override
     @Transactional
