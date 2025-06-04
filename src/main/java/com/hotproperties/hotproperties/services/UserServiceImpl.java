@@ -4,6 +4,7 @@ import com.hotproperties.hotproperties.entities.Role;
 import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.exceptions.AdminDeletionNotAllowedException;
 import com.hotproperties.hotproperties.exceptions.AlreadyExistsException;
+import com.hotproperties.hotproperties.exceptions.InvalidUserParameterException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.UserRepository;
 import com.hotproperties.hotproperties.utils.CurrentUserContext;
@@ -71,7 +72,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerNewUser(User user, Role role) {
+
+        if (user.getFirstName() == null || user.getFirstName().isBlank()
+                || user.getLastName() == null || user.getLastName().isBlank()
+                || user.getEmail() == null || user.getEmail().isBlank()
+                || user.getPassword() == null || user.getPassword().isBlank()) {
+            throw new InvalidUserParameterException("First name, last name, email, and password are required.");
+        }
+
         Optional<User> foundUser = userRepository.findByEmail(user.getEmail());
+
         if (foundUser.isPresent()) {
             throw new AlreadyExistsException("User already exists");
         }
@@ -109,6 +119,6 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsByEmail(email)) {
             throw new NotFoundException("User with email " + email + " does not exist");
         }
-            userRepository.deleteByEmail(email);
+        userRepository.deleteByEmail(email);
     }
 }

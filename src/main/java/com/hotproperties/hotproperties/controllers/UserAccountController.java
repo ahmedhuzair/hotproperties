@@ -7,6 +7,7 @@ import com.hotproperties.hotproperties.services.AuthService;
 import com.hotproperties.hotproperties.services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -100,7 +102,7 @@ public class UserAccountController {
             // Copy updates from form-bound user
             actualUser.setFirstName(updatedUser.getFirstName());
             actualUser.setLastName(updatedUser.getLastName());
-            actualUser.setEmail(updatedUser.getEmail());
+//            actualUser.setEmail(updatedUser.getEmail());
 
             userService.updateUserProfile(actualUser);
 
@@ -121,8 +123,12 @@ public class UserAccountController {
     }
 
     @PostMapping("/register")
-    public String registerBuyer(@ModelAttribute("user") User user,
+    public String registerBuyer(@Valid @ModelAttribute("user") User user,
+                                BindingResult result,
                                 RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "register"; // show the form again with validation errors
+        }
         try {
             // First, register the user (this will assign them an ID)
             User savedUser = userService.registerNewUser(user, Role.ROLE_BUYER);

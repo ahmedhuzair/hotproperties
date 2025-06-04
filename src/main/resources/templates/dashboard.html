@@ -20,6 +20,7 @@
     <h2 th:if="${#authorization.expression('hasRole(''BUYER'')')}">Buyer Dashboard</h2>
     <h2 th:if="${#authorization.expression('hasRole(''ADMIN'')')}">Admin Dashboard</h2>
 
+
     <ul class="no-bullets">
         <li><a th:href="@{/profile}">My Profile</a></li>
 

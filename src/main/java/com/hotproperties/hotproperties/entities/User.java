@@ -1,6 +1,8 @@
 package com.hotproperties.hotproperties.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")  // avoid using "user" — it's a reserved keyword in many SQL dialects
+@Table(name = "users")
 public class User {
 
     @Id
@@ -16,15 +18,20 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "First name is required")
     private String firstName;
 
+    @NotBlank(message = "Last name is required")
     @Column(nullable = false)
     private String lastName;
 
-
+    @NotBlank(message = "Email is required")
+    @Email(message = "Must be a valid email")
     @Column(nullable = false, unique = true)
     private String email;
 
+
+    @NotBlank(message = "Password is required")
     @Column(nullable = false)
     private String password;
 

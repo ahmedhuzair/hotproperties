@@ -4,6 +4,9 @@ import com.hotproperties.hotproperties.entities.Favorite;
 import com.hotproperties.hotproperties.entities.Property;
 import com.hotproperties.hotproperties.entities.PropertyImage;
 import com.hotproperties.hotproperties.entities.User;
+import com.hotproperties.hotproperties.exceptions.InvalidFavoriteParameterException;
+import com.hotproperties.hotproperties.exceptions.InvalidPropertyImageParameterException;
+import com.hotproperties.hotproperties.exceptions.InvalidPropertyParameterException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.FavoriteRepository;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
@@ -41,7 +44,12 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Property registerNewProperty(Property property) {
-
+        if (property.getTitle() == null || property.getTitle().isBlank()
+                || property.getPrice() == null
+                || property.getLocation() == null || property.getLocation().isBlank()
+                || property.getSize() == null) {
+            throw new InvalidPropertyParameterException("Title, price, location, and size are required.");
+        }
         User agent = userService.getCurrentUser();
         property.setAgent(agent);
         return propertyRepository.save(property);
@@ -165,6 +173,13 @@ public class PropertyServiceImpl implements PropertyService {
     @Transactional
     public void addPropertyToFavorites(Long propertyId) {
         User buyer = userService.getCurrentUser();
+        if (buyer == null) {
+            throw new InvalidFavoriteParameterException("User reference is missing or invalid.");
+        }
+
+        if (propertyId == null) {
+            throw new InvalidFavoriteParameterException("Property ID is required.");
+        }
         Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
         Favorite favorite = new Favorite(property, buyer);
         favoriteRepository.save(favorite);
@@ -208,6 +223,9 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public void storePropertyImages(Long id, List<MultipartFile> images) {
+        if (images == null || images.isEmpty()) {
+            throw new InvalidPropertyImageParameterException("No image files provided.");
+        }
         try {
             // Resolve absolute path relative to the project directory
             Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads", "property-images");

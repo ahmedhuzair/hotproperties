@@ -14,15 +14,19 @@
 
         <label for="username">Email</label>
         <input id="username" required="" th:field="*{email}" type="email"/>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
         <label for="password">Password</label>
         <input id="password" required="" th:field="*{password}" type="password"/>
 
         <label for="firstName">First Name</label>
         <input id="firstName" required="" th:field="*{firstName}" type="text"/>
+        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
 
         <label for="lastName">Last Name</label>
         <input id="lastName" required="" th:field="*{lastName}" type="text"/>
+        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+
 
         <br/><br/>
 
