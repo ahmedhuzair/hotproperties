@@ -12,7 +12,13 @@
     </script>
 </head>
 <body>
+<nav class="navbar">
+    <div class="navbar-content">
+        <img src="/Users/santhan1400/Documents/assignments/3rd quarter/oops/final_project/hotproperties/src/main/resources/static/images/logo.png" alt="Logo" class="logo">
+    </div>
+</nav>
 <div class="login-container">
+    <div class="welcome-box">
     <div th:if="${successMessage}" class="success">
         <p th:text="${successMessage}"></p>
     </div>
@@ -42,6 +48,7 @@
         Don't have an account?
         <a th:href="@{/register}">Register here</a>
     </p>
+</div>
 </div>
 </body>
 </html>
