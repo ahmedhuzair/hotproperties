@@ -6,11 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/login.css}"/>
 </head>
 <body>
-<nav class="navbar">
-    <div class="navbar-content">
-        <img src="/Users/santhan1400/Documents/assignments/3rd quarter/oops/final_project/hotproperties/src/main/resources/static/images/logo.png" alt="Logo" class="logo">
-    </div>
-</nav>
+<div th:replace="~{fragments/navbar :: navbar(false)}"></div>
 <div class="login-container">
     <h1>Edit Property</h1>
 
