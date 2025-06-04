@@ -214,9 +214,12 @@ public class PropertyServiceImpl implements PropertyService {
         }
 
         // No filters applied: return all sorted
-        return sortDesc ?
-                propertyRepository.findAllByOrderByPriceDesc() :
-                propertyRepository.findAllByOrderByPriceAsc();
+        if (sortDesc) {
+            return propertyRepository.findAllByOrderByPriceDesc();
+        } else {
+            return propertyRepository.findAllByOrderByPriceAsc();
+        }
+
     }
 
 
