@@ -196,8 +196,6 @@ public class PropertyServiceImpl implements PropertyService {
         }
 
 
-
-
         boolean sortDesc = "desc".equalsIgnoreCase(sort);
 
         // Full filter applied
