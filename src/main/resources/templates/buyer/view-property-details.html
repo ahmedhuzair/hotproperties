@@ -7,7 +7,7 @@
 </head>
 <body>
 <div th:replace="~{fragments/fragments :: navbar(true)}"></div>
-<div class="container">
+<div class="container" style="width: 60%; max-width: 90rem;  margin: 2rem auto;">
     <div th:if="${successMessage}" class="success">
         <p th:text="${successMessage}"></p>
     </div>
