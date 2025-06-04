@@ -8,7 +8,7 @@
 <body>
 <div th:replace="fragments/fragments :: navbar(false)"></div>
 <div class="login-container" style="margin-bottom: 25rem;  display: flex; justify-content: center; ">
-    <div class="welcome-box" style="width: 70%; max-width: 800px; padding: 2rem; border-radius: 10px; ">
+    <div class="welcome-box" style="width: 55%; max-width: 800px; padding: 2rem; border-radius: 10px; ">
         <div th:if="${successMessage}" class="success">
             <p th:text="${successMessage}"></p>
         </div>
@@ -34,7 +34,7 @@
                     <a th:href="@{/properties/list}">Browse Properties</a>
                 </li>
                 <li th:if="${#authorization.expression('hasRole(''BUYER'')')}">
-                    <a th:href="@{/favorites}">Saved Favorites</a>
+                    <a th:href="@{/favorites}" th:text="'Saved Favorites (' + ${countOfFavorites} + ')'">Saved Favorites</a>
                 </li>
 
                 <!--Admin options-->
@@ -58,13 +58,14 @@
                 </li>
 
                 <li th:if="${#authorization.expression('hasRole(''AGENT'')')}">
-                    <a th:href="@{/messages/agent}">View Messages</a>
+                    <a th:href="@{/messages/agent}"
+                       th:text="'View Messages (' + ${unrepliedMessagesCount} + ')'">View Messages</a>
                 </li>
             </ul>
         </div>
         <a class="section-spacing" th:href="@{/logout}">
-            <div style="text-align: center;">
-                <button class="logout">Logout</button>
+            <div style="text-align: center; ">
+                <button style="width: 5rem" class="logout">Logout</button>
             </div>
         </a>
 

@@ -29,16 +29,13 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyRepository propertyRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final FavoriteRepository favoriteRepository;
-    private final MessageRepository messageRepository;
+
 
 
     public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1, MessageRepository messageRepository) {
         this.propertyRepository = propertyRepository;
         this.userService = userService;
         this.userRepository = userRepository;
-        this.favoriteRepository = favoriteRepository1;
-        this.messageRepository = messageRepository;
     }
 
 
@@ -151,71 +148,6 @@ public class PropertyServiceImpl implements PropertyService {
     public Property viewPropertyDetail(Long propertyId) {
         return propertyRepository.findPropertyById(propertyId);
 
-    }
-
-    @Override
-    public List<Property> getFavoriteProperties() {
-        User buyer = userService.getCurrentUser();
-        List<Favorite> favorites = buyer.getFavorites();
-        List<Property> favoritePropertiesList = new ArrayList<>();
-        for (Favorite favorite : favorites) {
-            favoritePropertiesList.add(favorite.getProperty());
-        }
-        return favoritePropertiesList;
-    }
-
-    @Override
-    public List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort) {
-        return List.of();
-    }
-
-
-    @Override
-    @Transactional
-    public void addPropertyToFavorites(Long propertyId) {
-        User buyer = userService.getCurrentUser();
-        if (buyer == null) {
-            throw new InvalidFavoriteParameterException("User reference is missing or invalid.");
-        }
-
-        if (propertyId == null) {
-            throw new InvalidFavoriteParameterException("Property ID is required.");
-        }
-        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
-        Favorite favorite = new Favorite(property, buyer);
-        favoriteRepository.save(favorite);
-    }
-
-    @Override
-    @Transactional
-    public void removePropertyFromFavorites(Long propertyId) {
-
-        User buyer = userService.getCurrentUser();
-        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
-
-        if (!favoriteRepository.existsByUserIdAndPropertyId(buyer.getId(), propertyId)) {
-            throw new NotFoundException("Favorite with property ID " + propertyId + " for user " + buyer.getId() + " does not exist");
-        }
-        Favorite favorite = favoriteRepository.findByUserIdAndPropertyId(buyer.getId(), propertyId)
-                .orElseThrow(()-> new NotFoundException("Favorite not found"));
-        buyer.getFavorites().remove(favorite);
-        property.getFavorites().remove(favorite);
-
-    }
-
-    @Override
-    public boolean isPropertyFavoritedByCurrentUser(Long propertyId) {
-
-        User buyer = userService.getCurrentUser();
-        return favoriteRepository.existsByUserIdAndPropertyId(buyer.getId(), propertyId);
-    }
-
-    @Override
-    public void sendMessageToAgent(Long property_id, String message) {
-        User sender = userService.getCurrentUser();
-        Property property = propertyRepository.findById(property_id).orElseThrow(() -> new NotFoundException("Property not found"));
-        Message messageToSend = new Message(message, property, sender);
-        messageRepository.save(messageToSend);
     }
 
     @Override

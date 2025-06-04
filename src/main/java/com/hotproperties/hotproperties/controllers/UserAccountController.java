@@ -4,6 +4,8 @@ package com.hotproperties.hotproperties.controllers;
 import com.hotproperties.hotproperties.entities.Role;
 import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.services.AuthService;
+import com.hotproperties.hotproperties.services.FavoriteService;
+import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,10 +23,14 @@ public class UserAccountController {
 
     private final AuthService authService;
     private final UserService userService;
+    private final MessageService messageService;
+    private final FavoriteService favoriteService;
 
-    public UserAccountController(AuthService authService, UserService userService) {
+    public UserAccountController(AuthService authService, UserService userService, MessageService messageService, FavoriteService favoriteService) {
         this.authService = authService;
         this.userService = userService;
+        this.messageService = messageService;
+        this.favoriteService = favoriteService;
     }
 
     @GetMapping({"/", "/index"})
@@ -70,6 +76,8 @@ public class UserAccountController {
     @PreAuthorize("hasAnyRole('ADMIN','BUYER','AGENT')")
     public String showDashboard(Model model) {
         userService.prepareDashboardModel(model);
+        model.addAttribute("unrepliedMessagesCount",messageService.findUnrepliedMessageCountByAgentId());
+        model.addAttribute("countOfFavorites", favoriteService.getFavoriteProperties().size());
         return "dashboard";
     }
 

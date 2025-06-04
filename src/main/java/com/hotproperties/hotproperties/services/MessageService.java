@@ -18,4 +18,6 @@ public interface MessageService {
     Message getMessageById(Long messageId);
 
     void deleteMessageFromAgent(Long messageId);
+
+    int findUnrepliedMessageCountByAgentId();
 }

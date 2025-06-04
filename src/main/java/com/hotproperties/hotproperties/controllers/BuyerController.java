@@ -1,6 +1,7 @@
 package com.hotproperties.hotproperties.controllers;
 
 import com.hotproperties.hotproperties.entities.Property;
+import com.hotproperties.hotproperties.services.FavoriteService;
 import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
@@ -17,11 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BuyerController {
 
     private final PropertyService propertyService;
-    private final MessageService messageService;
+    private final FavoriteService favoriteService;
 
-    public BuyerController(PropertyService propertyService, UserService userService, MessageService messageService) {
+
+    public BuyerController(PropertyService propertyService, UserService userService, MessageService messageService, FavoriteService favoriteService) {
         this.propertyService = propertyService;
-        this.messageService = messageService;
+        this.favoriteService = favoriteService;
     }
 
     @PreAuthorize("hasRole('BUYER')")
@@ -43,7 +45,7 @@ public class BuyerController {
     @GetMapping("/properties/view/{property_id}")
     public String viewPropertyDetail(Model model, @PathVariable Long property_id) {
         model.addAttribute("property", propertyService.viewPropertyDetail(property_id));
-        boolean isFavorite = propertyService.isPropertyFavoritedByCurrentUser(property_id);
+        boolean isFavorite = favoriteService.isPropertyFavoritedByCurrentUser(property_id);
         model.addAttribute("isFavorite", isFavorite);
         return "/buyer/view-property-details";
     }

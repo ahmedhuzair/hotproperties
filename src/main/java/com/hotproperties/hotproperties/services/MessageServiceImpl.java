@@ -104,4 +104,12 @@ public class MessageServiceImpl implements MessageService {
 
     }
 
+    @Override
+    public int findUnrepliedMessageCountByAgentId() {
+        User agent = userService.getCurrentUser();
+        List<Property> propertiesOfAgent = propertyRepository.findAllByAgentOrderByTitleDesc(agent);
+        List<Message> unrepliedMessagesOfAgent = messageRepository.findByPropertyInAndReplyIsNull(propertiesOfAgent);
+        return unrepliedMessagesOfAgent.size();
+    }
+
 }
