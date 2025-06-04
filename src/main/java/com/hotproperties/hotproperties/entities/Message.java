@@ -29,11 +29,12 @@ public class Message {
     @Column(nullable = false, updatable = false)
     private LocalDateTime timeStamp;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String reply;
 
 
-    public Message() {}
+    public Message() {
+    }
 
     public Message(String content, Property property, User sender) {
         this.content = content;

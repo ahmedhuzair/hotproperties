@@ -55,4 +55,7 @@ public interface PropertyService {
 
     @PreAuthorize("hasRole('BUYER')")
     List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort);
+
+    @PreAuthorize("hasRole('BUYER')")
+    void sendMessageToAgent(Long property_id, String message);
 }

@@ -1,14 +1,12 @@
 package com.hotproperties.hotproperties.services;
 
-import com.hotproperties.hotproperties.entities.Favorite;
-import com.hotproperties.hotproperties.entities.Property;
-import com.hotproperties.hotproperties.entities.PropertyImage;
-import com.hotproperties.hotproperties.entities.User;
+import com.hotproperties.hotproperties.entities.*;
 import com.hotproperties.hotproperties.exceptions.InvalidFavoriteParameterException;
 import com.hotproperties.hotproperties.exceptions.InvalidPropertyImageParameterException;
 import com.hotproperties.hotproperties.exceptions.InvalidPropertyParameterException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.FavoriteRepository;
+import com.hotproperties.hotproperties.repositories.MessageRepository;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
 import com.hotproperties.hotproperties.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -32,13 +30,15 @@ public class PropertyServiceImpl implements PropertyService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final FavoriteRepository favoriteRepository;
+    private final MessageRepository messageRepository;
 
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1, MessageRepository messageRepository) {
         this.propertyRepository = propertyRepository;
         this.userService = userService;
         this.userRepository = userRepository;
         this.favoriteRepository = favoriteRepository1;
+        this.messageRepository = messageRepository;
     }
 
 
@@ -169,6 +169,7 @@ public class PropertyServiceImpl implements PropertyService {
         return List.of();
     }
 
+
     @Override
     @Transactional
     public void addPropertyToFavorites(Long propertyId) {
@@ -207,6 +208,14 @@ public class PropertyServiceImpl implements PropertyService {
 
         User buyer = userService.getCurrentUser();
         return favoriteRepository.existsByUserIdAndPropertyId(buyer.getId(), propertyId);
+    }
+
+    @Override
+    public void sendMessageToAgent(Long property_id, String message) {
+        User sender = userService.getCurrentUser();
+        Property property = propertyRepository.findById(property_id).orElseThrow(() -> new NotFoundException("Property not found"));
+        Message messageToSend = new Message(message, property, sender);
+        messageRepository.save(messageToSend);
     }
 
     @Override

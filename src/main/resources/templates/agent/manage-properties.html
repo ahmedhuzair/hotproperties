@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </td>
-            <td>0</td>
+            <td th:text="${p.favorites.size()}">Favorites</td>
 
             <td>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -65,7 +65,7 @@
     <div class="back-link">
         <a th:href="@{/dashboard}">← Back to Dashboard</a>
     </div>
-    </br></br>
+
 </div>
 </body>
 </html>

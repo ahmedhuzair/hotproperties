@@ -8,7 +8,9 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar(true)}"></div>
 <div class="container">
-
+    <div th:if="${successMessage}" class="success">
+        <p th:text="${successMessage}"></p>
+    </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h1 th:text="${property.title}">Property Title</h1>
@@ -52,7 +54,9 @@
     <div style="margin-top: 30px;">
         <h3>Contact the Agent</h3>
         <form th:action="@{/properties/message/{id}(id=${property.id})}" method="post">
-            <textarea name="message" rows="4" style="width: 100%;" placeholder="Your Message"></textarea>
+            <label>
+                <textarea name="message" rows="4" style="width: 100%;" placeholder="Your Message"></textarea>
+            </label>
             <br><br>
             <button type="submit">Send Message</button>
         </form>
@@ -76,7 +80,7 @@
     <!-- Image -->
     <img id="modalImage"
          th:src="@{'/property-images/' + ${property.images[0].imageFileName}}"
-         style="max-height: 90%; max-width: 90%; object-fit: contain; border-radius: 4px; box-shadow: 0 0 10px rgba(255,255,255,0.2);" />
+         style="max-height: 90%; max-width: 90%; object-fit: contain; border-radius: 4px; box-shadow: 0 0 10px rgba(255,255,255,0.2);"  alt="property image"/>
 
     <button onclick="nextImage()"
             style="position: absolute; left: 40%; font-size: 32px; color: white; background: none; border: none; cursor: pointer;">

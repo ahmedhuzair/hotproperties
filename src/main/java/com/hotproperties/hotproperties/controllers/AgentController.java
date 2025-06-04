@@ -2,6 +2,7 @@ package com.hotproperties.hotproperties.controllers;
 
 
 import com.hotproperties.hotproperties.entities.Property;
+import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,13 +20,16 @@ public class AgentController {
 
     private final UserService userService;
     private final PropertyService propertyService;
+    private final MessageService messageService;
 
-    public AgentController(UserService userService, PropertyService propertyService) {
+    public AgentController(UserService userService, PropertyService propertyService, MessageService messageService) {
         this.userService = userService;
         this.propertyService = propertyService;
+        this.messageService = messageService;
     }
 
     // === PROPERTY ADDING BY AGENT ONLY ===
+
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/properties/add")
     public String showAddPropertyForm(Model model) {
@@ -43,6 +47,7 @@ public class AgentController {
             // Then, store the property picture (if uploaded)
             if (files != null && !files.isEmpty()) {
                 propertyService.storePropertyImages(savedProperty.getId(), files);
+
             }
             redirectAttributes.addFlashAttribute("successMessage", "Property added successfully");
             return "redirect:/properties/manage";
@@ -124,8 +129,37 @@ public class AgentController {
         }
         return "redirect:/properties/manage";
     }
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/messages/agent")
+    public String viewAllMessages(Model model) {
+        model.addAttribute("messages", messageService.getAllMessagesOfAgent());
+        return "/agent/view-all-messages";
+    }
 
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/messages/{message_id}")
+    public String viewMessageDetails(@PathVariable Long message_id, Model model) {
+        model.addAttribute("message", messageService.getMessageById(message_id));
+        return "/agent/view-message-details";
+    }
 
+    @PreAuthorize("hasRole('AGENT')")
+    @PostMapping("/properties/replymessage/{message_id}")
+    public String sendReplyToBuyer(@PathVariable Long message_id,
+                                   @RequestParam("reply") String message,
+                              RedirectAttributes redirectAttributes) {
+
+        messageService.sendReplyToBuyer(message_id, message);
+        redirectAttributes.addFlashAttribute("successMessage", "Reply sent successfully.");
+        return "redirect:/messages/agent";
+    }
+
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/delete/message/agent/{messageId}")
+    public String deleteMessage(@PathVariable Long messageId) {
+        messageService.deleteMessageFromAgent(messageId);
+        return "redirect:/messages/agent";
+    }
 
 }
 
