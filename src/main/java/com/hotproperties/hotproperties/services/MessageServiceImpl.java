@@ -94,14 +94,11 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional
     public void deleteMessageFromAgent(Long messageId) {
+        User agent = userService.getCurrentUser();
         Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundException("Message not found"));
-        User agent = userService.getCurrentUser();
-        Property property = message.getProperty();
-        agent.getMessages().remove(message);
 
-
-
+        messageRepository.delete(message);
     }
 
     @Override

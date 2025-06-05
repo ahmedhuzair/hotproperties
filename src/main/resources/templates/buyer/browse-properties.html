@@ -12,7 +12,7 @@
 
     <form method="get" th:action="@{/properties/list}" style="margin-bottom: 2rem;">
         <div style="display: flex; gap: 1rem;">
-            <input type="text" name="zip" placeholder="Zip Code" th:value="${zip}" style="height: 2.5rem; padding: 0 0.8rem;">
+            <input type="number" name="zip" placeholder="Zip Code" th:value="${zip}" style="height: 2.5rem; padding: 0 0.8rem;">
             <input type="number" name="minSqFt" placeholder="Min Sq Ft" th:value="${minSqFt}" style="height: 2.5rem; padding: 0 0.8rem;">
             <input type="number" name="minPrice" placeholder="Min Price" th:value="${minPrice}" style="height: 2.5rem; padding: 0 0.8rem;">
             <input type="number" name="maxPrice" placeholder="Max Price" th:value="${maxPrice}" style="height: 2.5rem; padding: 0 0.8rem;">
@@ -20,10 +20,12 @@
                 <option value="asc" th:selected="${sortBy == 'asc'}">Price: Low to High</option>
                 <option value="desc" th:selected="${sortBy == 'desc'}">Price: High to Low</option>
             </select>
-            <button type="submit" style="height: 2.5rem; padding: 0 1rem;">Search</button>
+            <button type="submit" style="height: 2.5rem; min-width: 6rem; max-width: 6rem">Search</button>
+
             <a th:href="@{/properties/list}">
-                <button type="button" style="height: 2.5rem; padding: 0 1rem;">Clear</button>
+                <button class="gray-btn" type="button" style="height: 2.5rem; min-width: 6rem; max-width: 6rem;">Clear</button>
             </a>
+
         </div>
     </form>
 

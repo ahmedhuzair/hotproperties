@@ -283,3 +283,10 @@ a:hover {
     text-decoration: underline;
     color: #001F4D; /* slightly darker on hover */
 }
+.gray-btn {
+    background-color: gray;
+
+}
+.gray-btn:hover {
+ background-color: #555;
+}

@@ -34,14 +34,14 @@ public class MessageController {
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/messages/buyer")
-    public String viewMessagesBuyer(Model model) {
+    public String viewMessagesBuyerInbox(Model model) {
         model.addAttribute("messages", messageService.getAllMessagesOfBuyer());
         return "/buyer/view-all-messages";
     }
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/delete/message/{messageId}")
-    public String deleteMessageFromBuyer(@PathVariable Long messageId) {
+    public String deleteMessageFromBuyerInbox(@PathVariable Long messageId) {
         messageService.deleteMessageFromBuyer(messageId);
         return "redirect:/messages/buyer";
     }
@@ -49,14 +49,14 @@ public class MessageController {
     //AGENT METHODS
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/messages/agent")
-    public String viewAllMessagesAgent(Model model) {
+    public String viewMessagesAgentInbox(Model model) {
         model.addAttribute("messages", messageService.getAllMessagesOfAgent());
         return "/agent/view-all-messages";
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/messages/{message_id}")
-    public String viewMessageDetailsAgent(@PathVariable Long message_id, Model model) {
+    public String viewMessageDetailsForAgent(@PathVariable Long message_id, Model model) {
         model.addAttribute("message", messageService.getMessageById(message_id));
         return "/agent/view-message-details";
     }
@@ -74,7 +74,7 @@ public class MessageController {
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/delete/message/agent/{messageId}")
-    public String deleteMessageFromAgent(@PathVariable Long messageId) {
+    public String deleteMessageFromAgentInbox(@PathVariable Long messageId) {
         messageService.deleteMessageFromAgent(messageId);
         return "redirect:/messages/agent";
     }

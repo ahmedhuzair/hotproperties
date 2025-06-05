@@ -12,4 +12,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findAllBySenderIs(User sender);
     List<Message> findAllByPropertyIn(List<Property> properties);
     List<Message> findByPropertyInAndReplyIsNull(List<Property> properties);
+
 }
