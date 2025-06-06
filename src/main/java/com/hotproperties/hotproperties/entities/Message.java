@@ -40,6 +40,7 @@ public class Message {
         this.content = content;
         this.property = property;
         this.sender = sender;
+        this.reply = "";
     }
 
     public String getContent() {
