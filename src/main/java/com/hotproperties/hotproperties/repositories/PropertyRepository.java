@@ -13,6 +13,12 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     //Filtering Start
 
+    List<Property> findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
+            String zip, Integer minSqFt, Double minPrice, Double maxPrice);
+
+    List<Property> findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
+            String zip, Integer minSqFt, Double minPrice, Double maxPrice);
+
     // ASCENDING ORDER
     List<Property> findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
             String location, Integer size, Double minPrice, Double maxPrice);

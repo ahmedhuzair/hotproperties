@@ -166,7 +166,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort) {
-        // Handle nulls
+        // Handle null/defaults
         String locationFilter;
         if (zip == null || zip.isEmpty()) {
             locationFilter = "";
@@ -195,30 +195,33 @@ public class PropertyServiceImpl implements PropertyService {
             maxPriceFilter = maxPrice.doubleValue();
         }
 
-
         boolean sortDesc = "desc".equalsIgnoreCase(sort);
 
-        // Full filter applied
-        if (!locationFilter.isEmpty() || minSqFt != null || minPrice != null || maxPrice != null) {
+        // If ZIP is entered, match on location ending with zip
+        if (!locationFilter.isEmpty()) {
             if (sortDesc) {
-                return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
+                return propertyRepository.findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
                         locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
                 );
             } else {
-                return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
+                return propertyRepository.findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
                         locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
                 );
             }
         }
 
-        // No filters applied: return all sorted
+        // General filter with location containing
         if (sortDesc) {
-            return propertyRepository.findAllByOrderByPriceDesc();
+            return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
+                    locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+            );
         } else {
-            return propertyRepository.findAllByOrderByPriceAsc();
+            return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
+                    locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+            );
         }
-
     }
+
 
 
     @Override
