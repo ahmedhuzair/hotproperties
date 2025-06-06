@@ -1,6 +1,9 @@
 package com.hotproperties.hotproperties.controllers;
 
 import com.hotproperties.hotproperties.services.MessageService;
+import com.hotproperties.hotproperties.services.PropertyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MessageController {
 
     private final MessageService messageService;
+    private final PropertyService propertyService;
 
-    public MessageController(MessageService messageService) {
+    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
+
+    public MessageController(MessageService messageService, PropertyService propertyService) {
         this.messageService = messageService;
+        this.propertyService = propertyService;
     }
 
     //BUYER METHODS
@@ -28,6 +35,7 @@ public class MessageController {
 
         messageService.sendMessageToAgent(property_id, message);
         redirectAttributes.addFlashAttribute("successMessage", "Message sent successfully.");
+        logger.info("Message sent to Agent '{}'.", propertyService.viewPropertyDetail(property_id).getAgent());
         return "redirect:/properties/view/" + property_id;
     }
 
@@ -69,6 +77,7 @@ public class MessageController {
 
         messageService.sendReplyToBuyer(message_id, message);
         redirectAttributes.addFlashAttribute("successMessage", "Reply sent successfully.");
+        logger.info("Message sent to Buyer '{}'.", messageService.getMessageById(message_id).getSender());
         return "redirect:/messages/agent";
     }
 

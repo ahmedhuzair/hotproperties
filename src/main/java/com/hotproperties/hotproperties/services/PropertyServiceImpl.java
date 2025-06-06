@@ -175,12 +175,7 @@ public class PropertyServiceImpl implements PropertyService {
             Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads", "property-images");
             Files.createDirectories(uploadPath);  // Ensure path exists
 
-            // Locate property
-            if (!propertyRepository.existsById(propertyId)) {
-                throw new InvalidPropertyImageParameterException("Property not found for image.");
-            }
-
-            Property property = propertyRepository.getById(propertyId);
+            Property property = propertyRepository.findById(propertyId).orElseThrow(()->new InvalidPropertyImageParameterException("Property not found for image."));
 
             for (MultipartFile image : images) {
                 if (image != null && !image.isEmpty()) {

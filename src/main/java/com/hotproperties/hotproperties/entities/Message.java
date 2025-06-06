@@ -29,7 +29,7 @@ public class Message {
     @Column(nullable = false, updatable = false)
     private LocalDateTime timeStamp;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String reply;
 
 

@@ -5,6 +5,8 @@ import com.hotproperties.hotproperties.entities.Property;
 import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ public class AgentController {
     private final UserService userService;
     private final PropertyService propertyService;
     private final MessageService messageService;
+
+    private static final Logger logger = LoggerFactory.getLogger(AgentController.class);
 
     public AgentController(UserService userService, PropertyService propertyService, MessageService messageService) {
         this.userService = userService;
@@ -50,6 +54,7 @@ public class AgentController {
 
             }
             redirectAttributes.addFlashAttribute("successMessage", "Property added successfully");
+            logger.info("Property '{}' added.", savedProperty.getTitle());
             return "redirect:/properties/manage";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to add property. Please try again." + e.getMessage());

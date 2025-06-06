@@ -2,6 +2,8 @@ package com.hotproperties.hotproperties.controllers;
 
 import com.hotproperties.hotproperties.services.FavoriteService;
 import com.hotproperties.hotproperties.services.PropertyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,16 +14,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class FavoriteController {
 
     private final FavoriteService favoriteService;
+    private final PropertyService propertyService;
+
+    private static final Logger logger = LoggerFactory.getLogger(FavoriteController.class);
 
     public FavoriteController(PropertyService propertyService, FavoriteService favoriteService) {
 
         this.favoriteService = favoriteService;
+        this.propertyService = propertyService;
     }
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/favorites/add/{property_id}")
     public String addFavorite(@PathVariable Long property_id) {
         favoriteService.addPropertyToFavorites(property_id);
+        logger.info("Property '{}' added to favorites.", propertyService.viewPropertyDetail(property_id).getTitle());
         return "redirect:/properties/view/{property_id}";
     }
 

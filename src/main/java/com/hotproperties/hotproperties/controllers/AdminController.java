@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AdminController {
-    private static final Logger logger = LoggerFactory.getLogger(UserAccountController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     private final UserService userService;
 
