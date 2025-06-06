@@ -112,25 +112,25 @@ public class AgentController {
     public String editProperty(@ModelAttribute("property") Property updatedProperty,
                                @RequestParam("files") List<MultipartFile> files,
                                RedirectAttributes redirectAttributes,
-                               @PathVariable String property_id) {
+                               @PathVariable Long property_id) {
         try {
 
-            Property property = propertyService.getPropertyByIdForCurrentAgent(Long.parseLong(property_id));
-            if (property == null) {
+            Property actualProperty = propertyService.getPropertyByIdForCurrentAgent(property_id);
+            if (actualProperty == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Property not found.");
                 return "redirect:/properties/manage";
             }
 
-            property.setTitle(updatedProperty.getTitle());
-            property.setDescription(updatedProperty.getDescription());
-            property.setPrice(updatedProperty.getPrice());
-            property.setLocation(updatedProperty.getLocation());
-            property.setSize(updatedProperty.getSize());
+            actualProperty.setTitle(updatedProperty.getTitle());
+            actualProperty.setDescription(updatedProperty.getDescription());
+            actualProperty.setPrice(updatedProperty.getPrice());
+            actualProperty.setLocation(updatedProperty.getLocation());
+            actualProperty.setSize(updatedProperty.getSize());
 
-            propertyService.editProperty(property);
+            propertyService.editProperty(actualProperty);
 
             if (files != null && !files.isEmpty()) {
-                propertyService.storePropertyImages(property.getId(), files);
+                propertyService.storePropertyImages(actualProperty.getId(), files);
             }
 
             redirectAttributes.addFlashAttribute("successMessage", "Property updated successfully.");

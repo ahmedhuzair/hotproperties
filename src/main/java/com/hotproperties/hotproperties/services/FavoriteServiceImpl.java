@@ -49,7 +49,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (propertyId == null) {
             throw new InvalidFavoriteParameterException("Property ID is required.");
         }
-        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new InvalidFavoriteParameterException("Property not found."));
         Favorite favorite = new Favorite(property, buyer);
         favoriteRepository.save(favorite);
     }

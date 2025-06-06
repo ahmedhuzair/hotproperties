@@ -92,10 +92,11 @@
     </button>
 
     <!-- Image -->
+    <div th:if="${not #lists.isEmpty(property.images)}">
     <img id="modalImage"
          th:src="@{'/property-images/' + ${property.images[0].imageFileName}}"
          style="max-height: 90%; max-width: 90%; object-fit: contain; border-radius: 4px; box-shadow: 0 0 10px rgba(255,255,255,0.2);"  alt="property image"/>
-
+    </div>
     <button onclick="nextImage()"
             style="position: absolute; left: 40%; font-size: 32px; color: white; background: none; border: none; cursor: pointer;">
         ⟩

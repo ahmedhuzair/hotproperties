@@ -42,6 +42,9 @@ public class MessageServiceImpl implements MessageService {
         if (property == null) {
             throw new InvalidMessageParameterException("Property not found.");
         }
+        if(property.getAgent() == null) {
+            throw new InvalidMessageParameterException("Agent not found.");
+        }
 
         Message messageToSend = new Message(message, property, sender);
         messageRepository.save(messageToSend);
@@ -69,6 +72,10 @@ public class MessageServiceImpl implements MessageService {
         replyMessage.setReply(message);
         if (message == null || message.isEmpty()) {
             throw new InvalidMessageParameterException("Message content must not be empty.");
+        }
+
+        if (replyMessage.getSender() == null) {
+            throw new InvalidMessageParameterException("Sender not found.");
         }
 
         messageRepository.save(replyMessage);

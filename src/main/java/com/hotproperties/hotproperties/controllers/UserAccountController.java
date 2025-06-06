@@ -55,6 +55,7 @@ public class UserAccountController {
 
     @PostMapping("/login")
     public String processLogin(@ModelAttribute("user") User user,
+
                                HttpServletResponse response,
                                Model model) {
         try {
@@ -131,12 +132,9 @@ public class UserAccountController {
     }
 
     @PostMapping("/register")
-    public String registerBuyer(@Valid @ModelAttribute("user") User user,
-                                BindingResult result,
+    public String registerBuyer(@ModelAttribute("user") User user,
                                 RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            return "register"; // show the form again with validation errors
-        }
+
         try {
             // First, register the user (this will assign them an ID)
             User savedUser = userService.registerNewUser(user, Role.ROLE_BUYER);

@@ -18,19 +18,19 @@
     <form style="display: flex; flex-direction: column; gap: 0.4rem;" method="post" th:action="@{/properties/add}" th:object="${property}" enctype="multipart/form-data">
 
         <label for="title">Title:</label>
-        <input id="title" required="" th:field="*{title}" type="text"/>
+        <input id="title" th:field="*{title}" type="text"/>
 
         <label for="price">Price:</label>
-        <input id="price" required="" th:field="*{price}" type="number"/>
+        <input id="price" th:field="*{price}" type="number"/>
 
         <label for="location">Location:</label>
-        <input id="location" required="" th:field="*{location}" type="text"/>
+        <input id="location" th:field="*{location}" type="text"/>
 
         <label for="size">Size (sq ft):</label>
-        <input id="size" required="" th:field="*{size}" type="number"/>
+        <input id="size" th:field="*{size}" type="number"/>
 
         <label style="margin-top: 0.5rem" for="description" >Description:</label>
-        <textarea id="description" required="" th:field="*{description}" rows="4" cols="50"></textarea>
+        <textarea id="description" th:field="*{description}" rows="20" cols="50"></textarea>
 
         <label style="margin-top: 0.5rem" for="propertyPictures">Upload Property Images</label>
         <input id="propertyPictures" type="file" name="files" accept="image/*" multiple/>

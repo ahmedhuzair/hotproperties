@@ -7,24 +7,28 @@
 </head>
 <body>
 <div th:replace="~{fragments/fragments :: navbar(true)}"></div>
+
 <div class="container">
+    <div th:if="${errorMessage}" class="failure">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <h1>Edit Property</h1>
 
     <form style="display: flex; flex-direction: column; gap: 0.4rem;" class="section-spacing" method="post" th:action="@{/properties/edit/{property_id}(property_id=${property.id})}" enctype="multipart/form-data">
                     <label for="title">Title:</label>
-                    <input id="title" name="title" required="" th:value="${property.title}" type="text"/>
+                    <input id="title" name="title"  th:value="${property.title}" type="text"/>
         
                     <label for="price">Price:</label>
-                    <input id="price" name="price" required="" th:value="${property.price}" type="number"/>
+                    <input id="price" name="price" th:value="${property.price}" type="number"/>
 
                     <label for="location">Location:</label>
-                    <input id="location" name="location" required="" th:value="${property.location}" type="text"/>
+                    <input id="location" name="location" th:value="${property.location}" type="text"/>
 
                     <label for="size">Size (sq ft):</label>
-                    <input id="size" name="size" required="" th:value="${property.size}" type="number"/>
+                    <input id="size" name="size" th:value="${property.size}" type="number"/>
 
                     <label for="description">Description:</label>
-                    <textarea id="description" required="" th:field="${property.description}" rows="4" cols="50"></textarea>
+                    <textarea id="description" th:field="${property.description}" rows="20" cols="50"></textarea>
 
                     <label for="propertyPictures">Add New Images (optional):</label>
                     <input id="propertyPictures" type="file" name="files" accept="image/*" multiple/>
