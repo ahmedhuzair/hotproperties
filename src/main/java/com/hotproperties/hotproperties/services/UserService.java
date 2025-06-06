@@ -34,4 +34,7 @@ public interface UserService {
 
     @PreAuthorize("hasRole('ADMIN')")
     void deleteUserByEmail(String userEmail);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    User getUserByEmail(String email);
 }

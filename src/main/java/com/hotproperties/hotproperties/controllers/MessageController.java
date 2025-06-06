@@ -1,7 +1,9 @@
 package com.hotproperties.hotproperties.controllers;
 
+import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
+import com.hotproperties.hotproperties.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +22,12 @@ public class MessageController {
     private final PropertyService propertyService;
 
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
+    private final UserService userService;
 
-    public MessageController(MessageService messageService, PropertyService propertyService) {
+    public MessageController(MessageService messageService, PropertyService propertyService, UserService userService) {
         this.messageService = messageService;
         this.propertyService = propertyService;
+        this.userService = userService;
     }
 
     //BUYER METHODS
@@ -34,8 +38,10 @@ public class MessageController {
                                      RedirectAttributes redirectAttributes) {
 
         messageService.sendMessageToAgent(property_id, message);
+        User sender = userService.getCurrentUser();
+
         redirectAttributes.addFlashAttribute("successMessage", "Message sent successfully.");
-        logger.info("Message sent to Agent '{}'.", propertyService.viewPropertyDetail(property_id).getAgent());
+        logger.info("Message '{}' sent to Agent '{}' from Buyer '{}' ", message, propertyService.viewPropertyDetail(property_id).getAgent().getEmail(), sender.getEmail() );
         return "redirect:/properties/view/" + property_id;
     }
 
@@ -76,8 +82,10 @@ public class MessageController {
                                    RedirectAttributes redirectAttributes) {
 
         messageService.sendReplyToBuyer(message_id, message);
+        User agent = userService.getCurrentUser();
+        User buyer = messageService.findSenderByMessageId(message_id);
         redirectAttributes.addFlashAttribute("successMessage", "Reply sent successfully.");
-        logger.info("Message sent to Buyer '{}'.", messageService.getMessageById(message_id).getSender());
+        logger.info("Reply: '{}' sent to Buyer '{}' from Agent '{}' ", message, buyer.getEmail(), agent.getEmail() );
         return "redirect:/messages/agent";
     }
 

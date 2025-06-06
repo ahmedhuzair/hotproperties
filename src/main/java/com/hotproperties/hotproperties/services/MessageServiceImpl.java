@@ -109,4 +109,12 @@ public class MessageServiceImpl implements MessageService {
         return unrepliedMessagesOfAgent.size();
     }
 
+    @Override
+    public User findSenderByMessageId(Long messageId) {
+        Message message = messageRepository.findById(messageId).orElseThrow(() -> new NotFoundException("Message not found"));
+
+        return message.getSender();
+    }
+
+
 }

@@ -66,6 +66,8 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/user/{email}")
     public String deleteUser(@PathVariable String email, RedirectAttributes redirectAttributes) {
+        User user = userService.getUserByEmail(email);
+        logger.info("User '{}' deleted.", user.getEmail());
         userService.deleteUserByEmail(email);
         redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully.");
         return "redirect:/users/admin";

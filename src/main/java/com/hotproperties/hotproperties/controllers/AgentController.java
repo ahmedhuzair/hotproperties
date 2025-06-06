@@ -2,6 +2,7 @@ package com.hotproperties.hotproperties.controllers;
 
 
 import com.hotproperties.hotproperties.entities.Property;
+import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
@@ -44,6 +45,7 @@ public class AgentController {
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/properties/add")
     public String addProperty(@ModelAttribute("property") Property property, @RequestParam("files") List<MultipartFile> files, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
         try {
             // First, register the Property (this will assign them an ID)
             Property savedProperty = propertyService.registerNewProperty(property);
@@ -54,7 +56,7 @@ public class AgentController {
 
             }
             redirectAttributes.addFlashAttribute("successMessage", "Property added successfully");
-            logger.info("Property '{}' added.", savedProperty.getTitle());
+            logger.info("Property '{}' added to Agent '{}' list.", savedProperty.getTitle(), user.getEmail());
             return "redirect:/properties/manage";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to add property. Please try again." + e.getMessage());
@@ -74,8 +76,11 @@ public class AgentController {
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/delete/property/{property_id}")
     public String deleteProperty(@PathVariable Long property_id, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
+        Property propertyToBeDeleted = propertyService.viewPropertyDetail(property_id);
         propertyService.deletePropertyByIdForCurrentAgent(property_id);
         redirectAttributes.addFlashAttribute("successMessage", "Property deleted successfully.");
+        logger.info("Property '{}' removed from Agent '{}' list.", propertyToBeDeleted.getTitle(), user.getEmail());
         return "redirect:/properties/manage";
     }
 

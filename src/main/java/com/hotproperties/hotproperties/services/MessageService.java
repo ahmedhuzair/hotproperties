@@ -1,6 +1,7 @@
 package com.hotproperties.hotproperties.services;
 
 import com.hotproperties.hotproperties.entities.Message;
+import com.hotproperties.hotproperties.entities.User;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface MessageService {
     void deleteMessageFromAgent(Long messageId);
 
     int findUnrepliedMessageCountByAgentId();
+
+    User findSenderByMessageId(Long messageId);
 }

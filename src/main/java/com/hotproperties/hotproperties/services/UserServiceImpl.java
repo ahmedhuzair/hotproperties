@@ -109,6 +109,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found: " + email));
+    }
+
     @Transactional
     @Override
     public void deleteUserByEmail(String email) {

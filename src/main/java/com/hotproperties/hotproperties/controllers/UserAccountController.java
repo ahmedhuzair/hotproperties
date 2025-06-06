@@ -72,8 +72,7 @@ public class UserAccountController {
     @GetMapping("/logout")
     @PreAuthorize("hasAnyRole('BUYER', 'AGENT', 'ADMIN')")
     public String logout(HttpServletResponse response) {
-        authService.clearJwtCookie(response);
-
+        User user = userService.getCurrentUser();
         return "redirect:/login";
     }
 
@@ -82,7 +81,7 @@ public class UserAccountController {
     @PreAuthorize("hasAnyRole('ADMIN','BUYER','AGENT')")
     public String showDashboard(Model model) {
         userService.prepareDashboardModel(model);
-        model.addAttribute("unrepliedMessagesCount",messageService.findUnrepliedMessageCountByAgentId());
+        model.addAttribute("unrepliedMessagesCount", messageService.findUnrepliedMessageCountByAgentId());
         model.addAttribute("countOfFavorites", favoriteService.getFavoriteProperties().size());
         return "dashboard";
     }
@@ -115,7 +114,7 @@ public class UserAccountController {
             actualUser.setLastName(updatedUser.getLastName());
 
             userService.updateUserProfile(actualUser);
-            logger.info("User: '{} {}' profile updated successfully .", updatedUser.getFirstName(),updatedUser.getLastName());
+            logger.info("User: '{} {}' profile updated successfully .", updatedUser.getFirstName(), updatedUser.getLastName());
             redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully.");
         } catch (Exception ex) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to update profile: " + ex.getMessage());

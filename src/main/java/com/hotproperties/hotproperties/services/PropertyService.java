@@ -37,7 +37,7 @@ public interface PropertyService {
     @PreAuthorize("hasRole('AGENT')")
     void deletePropertyImage(Long propertyId, Long imageId);
 
-    @PreAuthorize("hasRole('BUYER')")
+    @PreAuthorize("hasAnyRole('BUYER','AGENT')")
     Property viewPropertyDetail(Long propertyId);
 
 }
