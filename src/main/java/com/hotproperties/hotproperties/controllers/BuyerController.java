@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 public class BuyerController {
 
@@ -34,12 +36,23 @@ public class BuyerController {
                                     @RequestParam(required = false) Integer maxPrice,
                                     @RequestParam(required = false) String sort,
                                     Model model) {
-        model.addAttribute("properties", propertyService.getAllProperties());
-        model.addAttribute("propertyCount", propertyService.getAllProperties().size());
-
+        List<Property> properties = propertyService.getFilteredProperties(zip, minSqFt, minPrice, maxPrice, sort);
+        model.addAttribute("properties", properties);
+        model.addAttribute("zip", zip);
+        model.addAttribute("minSqFt", minSqFt);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("sortBy", sort);
         return "/buyer/browse-properties";
     }
 
+
+    @PreAuthorize("hasRole('BUYER')")
+    @GetMapping("/favorites")
+    public String viewFavoriteProperties(Model model) {
+        model.addAttribute("properties", propertyService.getFavoriteProperties());
+        return "/buyer/saved-favorites";
+    }
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/properties/view/{property_id}")

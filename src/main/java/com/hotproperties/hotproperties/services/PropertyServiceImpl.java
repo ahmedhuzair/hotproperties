@@ -160,6 +160,119 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
+
+    public List<Property> getFavoriteProperties() {
+        User buyer = userService.getCurrentUser();
+        List<Favorite> favorites = buyer.getFavorites();
+        List<Property> favoritePropertiesList = new ArrayList<>();
+        for (Favorite favorite : favorites) {
+            favoritePropertiesList.add(favorite.getProperty());
+        }
+        return favoritePropertiesList;
+    }
+
+    @Override
+    public List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort) {
+        // Handle null/defaults
+        String locationFilter;
+        if (zip == null || zip.isEmpty()) {
+            locationFilter = "";
+        } else {
+            locationFilter = zip;
+        }
+
+        Integer minSqFtFilter;
+        if (minSqFt == null) {
+            minSqFtFilter = 0;
+        } else {
+            minSqFtFilter = minSqFt;
+        }
+
+        Double minPriceFilter;
+        if (minPrice == null) {
+            minPriceFilter = 0.0;
+        } else {
+            minPriceFilter = minPrice.doubleValue();
+        }
+
+        Double maxPriceFilter;
+        if (maxPrice == null) {
+            maxPriceFilter = Double.MAX_VALUE;
+        } else {
+            maxPriceFilter = maxPrice.doubleValue();
+        }
+
+        boolean sortDesc = "desc".equalsIgnoreCase(sort);
+
+        // If ZIP is entered, match on location ending with zip
+        if (!locationFilter.isEmpty()) {
+            if (sortDesc) {
+                return propertyRepository.findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
+                        locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+                );
+            } else {
+                return propertyRepository.findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
+                        locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+                );
+            }
+        }
+
+        // General filter with location containing
+        if (sortDesc) {
+            return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
+                    locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+            );
+        } else {
+            return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
+                    locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
+            );
+        }
+    }
+
+
+
+    @Override
+    @Transactional
+    public void addPropertyToFavorites(Long propertyId) {
+        User buyer = userService.getCurrentUser();
+        if (buyer == null) {
+            throw new InvalidFavoriteParameterException("User reference is missing or invalid.");
+        }
+
+        if (propertyId == null) {
+            throw new InvalidFavoriteParameterException("Property ID is required.");
+        }
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
+        Favorite favorite = new Favorite(property, buyer);
+        favoriteRepository.save(favorite);
+    }
+
+    @Override
+    @Transactional
+    public void removePropertyFromFavorites(Long propertyId) {
+
+        User buyer = userService.getCurrentUser();
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
+
+        if (!favoriteRepository.existsByUserIdAndPropertyId(buyer.getId(), propertyId)) {
+            throw new NotFoundException("Favorite with property ID " + propertyId + " for user " + buyer.getId() + " does not exist");
+        }
+        Favorite favorite = favoriteRepository.findByUserIdAndPropertyId(buyer.getId(), propertyId)
+                .orElseThrow(()-> new NotFoundException("Favorite not found"));
+        buyer.getFavorites().remove(favorite);
+        property.getFavorites().remove(favorite);
+
+    }
+
+    @Override
+    public boolean isPropertyFavoritedByCurrentUser(Long propertyId) {
+
+        User buyer = userService.getCurrentUser();
+        return favoriteRepository.existsByUserIdAndPropertyId(buyer.getId(), propertyId);
+    }
+
+    @Override
+
     public void prepareEditPropertyModel(Model model, Long id) {
         User agent = userService.getCurrentUser();
         Property properties = propertyRepository.findByIdAndAgent(id, agent);
