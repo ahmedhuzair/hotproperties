@@ -2,11 +2,11 @@
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>User Management</title>
+    <title>Your Messages</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="fragments/fragments :: navbar(true)"></div>
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
 <div class="container">
     <div th:if="${successMessage}" class="success">
         <p th:text="${successMessage}"></p>
@@ -14,26 +14,29 @@
     <div th:if="${errorMessage}" class="failure">
         <p th:text="${errorMessage}"></p>
     </div>
-    <h1>User Management</h1>
+    <h1>Your Messages</h1>
     <table>
-        <thead>
+        <thead style="background-color: lightgrey">
         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
+            <th>Property</th>
+            <th>Your Message</th>
+            <th>Sent At</th>
+            <th>Agent Reply</th>
             <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="u : ${users}">
-            <td th:text="${u.lastName + ', ' + u.firstName}">Full Name</td>
-            <td th:text="${u.email}">email</td>
-            <td th:text="${u.role.name.replace('ROLE_', '')}">email</td>
+        <tr th:each="m : ${messages}">
+            <td th:text="${m.property.title}">Property Title</td>
+            <td th:text="${m.content}">Message Content</td>
+            <td th:text="${#temporals.format(m.timeStamp, 'yyyy-MM-dd HH:mm')}">Sent At</td>
+            <td th:text="${m.reply}">Reply</td>
+
             <td>
-                <a th:href="@{/delete/user/{email}(email=${u.email})}">
+                <a th:href="@{/delete/message/{messageId}(messageId=${m.id})}">
 
                     <button class="red" type="button"
-                            onclick="return confirm('Are you sure you want to delete this user?')">Delete
+                            onclick="return confirm('Are you sure you want to delete this message?')">Delete
                     </button>
                 </a>
             </td>
@@ -43,7 +46,7 @@
     <div class="back-link">
         <a th:href="@{/dashboard}">← Back to Dashboard</a>
     </div>
-    </br></br>
+
 </div>
 </body>
 </html>

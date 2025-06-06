@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Your Property Messages</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/fragments :: navbar(true)}"></div>
+
+<div class="container">
+    <div th:if="${successMessage}" class="success"
+         style="background-color: #d4edda; color: #155724;
+            padding: 8px 5px; border-radius: 5px;
+            width: max-content; margin: 5px auto;">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <div th:if="${errorMessage}" class="failure">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <h1>Messages from Interested Buyers</h1>
+    <table>
+        <thead style="background-color: lightgrey">
+        <tr>
+            <th>Property</th>
+            <th>Buyer</th>
+            <th>Message</th>
+            <th>Timestamp</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="m : ${messages}">
+            <td th:text="${m.property.title}">Property</td>
+            <td th:text="${m.sender.firstName}+ ' ' + ${m.sender.lastName}">Buyer</td>
+            <td th:text="${m.content}">Message</td>
+            <td th:text="${#temporals.format(m.timeStamp, 'yyyy-MM-dd HH:mm')}">Sent At</td>
+            <td>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a th:href="@{/messages/{message_id}(message_id=${m.id})}">
+                        <button type="button">View</button>
+                    </a>
+                    <a th:href="@{/delete/message/agent/{messageId}(messageId=${m.id})}">
+                        <button class="red" type="button"
+                                onclick="return confirm('Are you sure you want to delete this message?')">Delete
+                        </button>
+                    </a>
+                </div>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="back-link">
+        <a th:href="@{/dashboard}">← Back to Dashboard</a>
+    </div>
+
+</div>
+</body>
+</html>

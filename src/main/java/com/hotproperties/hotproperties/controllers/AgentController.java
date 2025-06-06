@@ -2,8 +2,12 @@ package com.hotproperties.hotproperties.controllers;
 
 
 import com.hotproperties.hotproperties.entities.Property;
+import com.hotproperties.hotproperties.entities.User;
+import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +23,18 @@ public class AgentController {
 
     private final UserService userService;
     private final PropertyService propertyService;
+    private final MessageService messageService;
 
-    public AgentController(UserService userService, PropertyService propertyService) {
+    private static final Logger logger = LoggerFactory.getLogger(AgentController.class);
+
+    public AgentController(UserService userService, PropertyService propertyService, MessageService messageService) {
         this.userService = userService;
         this.propertyService = propertyService;
+        this.messageService = messageService;
     }
 
     // === PROPERTY ADDING BY AGENT ONLY ===
+
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/properties/add")
     public String showAddPropertyForm(Model model) {
@@ -36,6 +45,7 @@ public class AgentController {
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/properties/add")
     public String addProperty(@ModelAttribute("property") Property property, @RequestParam("files") List<MultipartFile> files, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
         try {
             // First, register the Property (this will assign them an ID)
             Property savedProperty = propertyService.registerNewProperty(property);
@@ -43,12 +53,14 @@ public class AgentController {
             // Then, store the property picture (if uploaded)
             if (files != null && !files.isEmpty()) {
                 propertyService.storePropertyImages(savedProperty.getId(), files);
+
             }
             redirectAttributes.addFlashAttribute("successMessage", "Property added successfully");
+            logger.info("Property '{}' added to Agent '{}' list.", savedProperty.getTitle(), user.getEmail());
             return "redirect:/properties/manage";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to add property. Please try again." + e.getMessage());
-            return "redirect:/properties/manage";
+            return "redirect:/properties/add";
         }
     }
 
@@ -64,8 +76,11 @@ public class AgentController {
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/delete/property/{property_id}")
     public String deleteProperty(@PathVariable Long property_id, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
+        Property propertyToBeDeleted = propertyService.viewPropertyDetail(property_id);
         propertyService.deletePropertyByIdForCurrentAgent(property_id);
         redirectAttributes.addFlashAttribute("successMessage", "Property deleted successfully.");
+        logger.info("Property '{}' removed from Agent '{}' list.", propertyToBeDeleted.getTitle(), user.getEmail());
         return "redirect:/properties/manage";
     }
 
@@ -97,25 +112,25 @@ public class AgentController {
     public String editProperty(@ModelAttribute("property") Property updatedProperty,
                                @RequestParam("files") List<MultipartFile> files,
                                RedirectAttributes redirectAttributes,
-                               @PathVariable String property_id) {
+                               @PathVariable Long property_id) {
         try {
 
-            Property property = propertyService.getPropertyByIdForCurrentAgent(Long.parseLong(property_id));
-            if (property == null) {
+            Property actualProperty = propertyService.getPropertyByIdForCurrentAgent(property_id);
+            if (actualProperty == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Property not found.");
                 return "redirect:/properties/manage";
             }
 
-            property.setTitle(updatedProperty.getTitle());
-            property.setDescription(updatedProperty.getDescription());
-            property.setPrice(updatedProperty.getPrice());
-            property.setLocation(updatedProperty.getLocation());
-            property.setSize(updatedProperty.getSize());
+            actualProperty.setTitle(updatedProperty.getTitle());
+            actualProperty.setDescription(updatedProperty.getDescription());
+            actualProperty.setPrice(updatedProperty.getPrice());
+            actualProperty.setLocation(updatedProperty.getLocation());
+            actualProperty.setSize(updatedProperty.getSize());
 
-            propertyService.editProperty(property);
+            propertyService.editProperty(actualProperty);
 
             if (files != null && !files.isEmpty()) {
-                propertyService.storePropertyImages(property.getId(), files);
+                propertyService.storePropertyImages(actualProperty.getId(), files);
             }
 
             redirectAttributes.addFlashAttribute("successMessage", "Property updated successfully.");
@@ -124,7 +139,6 @@ public class AgentController {
         }
         return "redirect:/properties/manage";
     }
-
 
 
 }

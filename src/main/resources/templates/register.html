@@ -3,11 +3,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(false)}"></div>
-<div class="login-container">
+<div th:replace="~{fragments/fragments :: navbar(false)}"></div>
+<div class="login-container" style="margin-bottom: 25rem">
     <div class="welcome-box">
     <h1>Create Buyer Account</h1>
     <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
@@ -15,19 +15,16 @@
     <form method="post" th:action="@{/register}" th:object="${user}" enctype="multipart/form-data">
 
         <label for="username">Email</label>
-        <input id="username" required="" th:field="*{email}" type="email"/>
-        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        <input id="username" th:field="*{email}" type="email"/>
 
         <label for="password">Password</label>
-        <input id="password" required="" th:field="*{password}" type="password"/>
+        <input id="password" th:field="*{password}" type="password"/>
 
         <label for="firstName">First Name</label>
-        <input id="firstName" required="" th:field="*{firstName}" type="text"/>
-        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+        <input id="firstName" th:field="*{firstName}" type="text"/>
 
         <label for="lastName">Last Name</label>
-        <input id="lastName" required="" th:field="*{lastName}" type="text"/>
-        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+        <input id="lastName" th:field="*{lastName}" type="text"/>
 
 
         <br/><br/>

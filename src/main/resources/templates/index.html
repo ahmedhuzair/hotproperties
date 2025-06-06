@@ -2,30 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Welcome</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar(false)}"></div>
-<div class="login-container">
+<div th:replace="~{fragments/fragments :: navbar(false)}"></div>
+<div class="login-container" style="margin-bottom: 25rem">
     <div class="welcome-box">
-    <h1>Welcome to HotProperties</h1>
-    <p style="text-align: center">Find your dream home or manage your listings with ease.</p>
+        <h1>Welcome to HotProperties</h1>
+        <p style="color: gray; text-align: center">Find your dream home or manage your listings with ease.</p>
 
-    <!-- ✅ Static image served from /static/images -->
-<!--    <img th:src="@{/images/spring.webp}" alt="Spring Boot Dashboard" class="centered-image" />-->
+        <br>
+        <div style="display: flex; justify-content: center; gap: 10px;">
+            <a th:href="@{/login}">
+                <button style="width: 5rem;" type="button">Log In</button>
+            </a>
+            <a th:href="@{/register}">
+                <button style="width: 5rem;" type="button">Register</button>
+            </a>
 
-<!--    <p class="centered-link">Please log in to access your dashboard.</p>-->
 
-    <div style="display: flex; justify-content: center; gap: 10px;">
-        <a th:href="@{/login}">
-            <button type="button">Log In</button>
-        </a>
-        <a th:href="@{/register}">
-            <button type="button">Register</button>
-        </a>
+        </div>
+
+        <p style="margin-top: 1rem; color: gray ">App version: <span th:text="${appVersion}"></span></p>
     </div>
-
-</div>
 </div>
 </body>
 </html>

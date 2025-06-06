@@ -1,14 +1,12 @@
 package com.hotproperties.hotproperties.services;
 
-import com.hotproperties.hotproperties.entities.Favorite;
-import com.hotproperties.hotproperties.entities.Property;
-import com.hotproperties.hotproperties.entities.PropertyImage;
-import com.hotproperties.hotproperties.entities.User;
+import com.hotproperties.hotproperties.entities.*;
 import com.hotproperties.hotproperties.exceptions.InvalidFavoriteParameterException;
 import com.hotproperties.hotproperties.exceptions.InvalidPropertyImageParameterException;
 import com.hotproperties.hotproperties.exceptions.InvalidPropertyParameterException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
 import com.hotproperties.hotproperties.repositories.FavoriteRepository;
+import com.hotproperties.hotproperties.repositories.MessageRepository;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
 import com.hotproperties.hotproperties.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -31,14 +29,12 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyRepository propertyRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final FavoriteRepository favoriteRepository;
 
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1, MessageRepository messageRepository) {
         this.propertyRepository = propertyRepository;
         this.userService = userService;
         this.userRepository = userRepository;
-        this.favoriteRepository = favoriteRepository1;
     }
 
 
@@ -48,7 +44,10 @@ public class PropertyServiceImpl implements PropertyService {
                 || property.getPrice() == null
                 || property.getLocation() == null || property.getLocation().isBlank()
                 || property.getSize() == null) {
-            throw new InvalidPropertyParameterException("Title, price, location, and size are required.");
+            throw new InvalidPropertyParameterException(" Title, price, location, and size are required.");
+        }
+        if (propertyRepository.existsByTitle(property.getTitle())) {
+            throw new InvalidPropertyParameterException(" Property already exists.");
         }
         User agent = userService.getCurrentUser();
         property.setAgent(agent);
@@ -75,24 +74,31 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void editProperty(Property property) {
+    public void editProperty(Property updatedProperty) {
         User agent = userService.getCurrentUser();
-        Optional<Property> existingPropertyOpt = propertyRepository.findById(property.getId());
 
-        if (existingPropertyOpt.isPresent()) {
-            Property existingProperty = existingPropertyOpt.get();
-            if (!existingProperty.getAgent().getId().equals(agent.getId())) {
-                throw new RuntimeException("You do not own this property.");
-            }
-            existingProperty.setTitle(property.getTitle());
-            existingProperty.setDescription(property.getDescription());
-            existingProperty.setPrice(property.getPrice());
-            existingProperty.setLocation(property.getLocation());
-            propertyRepository.save(existingProperty);
-        } else {
-            throw new NotFoundException("Property not found");
+        if (updatedProperty.getTitle() == null || updatedProperty.getTitle().isBlank()
+                || updatedProperty.getPrice() == null
+                || updatedProperty.getLocation() == null || updatedProperty.getLocation().isBlank()
+                || updatedProperty.getSize() == null) {
+            throw new InvalidPropertyParameterException(" Title, price, location and size are required.");
         }
+
+        Property existingProperty = propertyRepository.findById(updatedProperty.getId())
+                .orElseThrow(() -> new NotFoundException("Property not found"));
+
+        if (!existingProperty.getAgent().getId().equals(agent.getId())) {
+            throw new RuntimeException("You do not own this property.");
+        }
+
+        existingProperty.setTitle(updatedProperty.getTitle());
+        existingProperty.setDescription(updatedProperty.getDescription());
+        existingProperty.setPrice(updatedProperty.getPrice());
+        existingProperty.setLocation(updatedProperty.getLocation());
+        propertyRepository.save(existingProperty);
+
     }
+
     @Transactional
     @Override
     public void deletePropertyByIdForCurrentAgent(Long id) {
@@ -154,6 +160,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
+
     public List<Property> getFavoriteProperties() {
         User buyer = userService.getCurrentUser();
         List<Favorite> favorites = buyer.getFavorites();
@@ -265,6 +272,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
+
     public void prepareEditPropertyModel(Model model, Long id) {
         User agent = userService.getCurrentUser();
         Property properties = propertyRepository.findByIdAndAgent(id, agent);
@@ -277,7 +285,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void storePropertyImages(Long id, List<MultipartFile> images) {
+    public void storePropertyImages(Long propertyId, List<MultipartFile> images) {
         if (images == null || images.isEmpty()) {
             throw new InvalidPropertyImageParameterException("No image files provided.");
         }
@@ -286,12 +294,15 @@ public class PropertyServiceImpl implements PropertyService {
             Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads", "property-images");
             Files.createDirectories(uploadPath);  // Ensure path exists
 
-            // Locate property
-            Property property = propertyRepository.findById(id).orElseThrow(() -> new NotFoundException("Property not found"));
+            Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new InvalidPropertyImageParameterException("Property not found for image."));
 
             for (MultipartFile image : images) {
                 if (image != null && !image.isEmpty()) {
+
                     String filename = UUID.randomUUID() + "_" + image.getOriginalFilename();
+                if(!(filename.toLowerCase().endsWith(".jpg") || filename.toLowerCase().endsWith(".jpeg") || filename.toLowerCase().endsWith(".png") || filename.toLowerCase().endsWith(".webp") || filename.toLowerCase().endsWith(".heic"))) {
+                        throw new InvalidPropertyImageParameterException("Invalid image format");
+                    }
                     Path filePath = uploadPath.resolve(filename);
                     image.transferTo(filePath.toFile());
 

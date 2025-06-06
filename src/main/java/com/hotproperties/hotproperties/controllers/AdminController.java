@@ -3,6 +3,8 @@ package com.hotproperties.hotproperties.controllers;
 import com.hotproperties.hotproperties.entities.Role;
 import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AdminController {
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     private final UserService userService;
 
     public AdminController(UserService userService) {
@@ -40,6 +44,8 @@ public class AdminController {
 
 
             redirectAttributes.addFlashAttribute("successMessage", "Agent registration successful.");
+            logger.info("Agent '{}' created.", user.getEmail());
+
             return "redirect:/dashboard";
 
         } catch (Exception e) {
@@ -60,6 +66,8 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/user/{email}")
     public String deleteUser(@PathVariable String email, RedirectAttributes redirectAttributes) {
+        User user = userService.getUserByEmail(email);
+        logger.info("User '{}' deleted.", user.getEmail());
         userService.deleteUserByEmail(email);
         redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully.");
         return "redirect:/users/admin";

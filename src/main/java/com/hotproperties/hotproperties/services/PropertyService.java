@@ -19,15 +19,6 @@ public interface PropertyService {
     @PreAuthorize("hasRole('BUYER')")
     List<Property> getAllProperties();
 
-    @PreAuthorize("hasRole('BUYER')")
-    void addPropertyToFavorites(Long propertyId);
-
-    @PreAuthorize("hasRole('BUYER')")
-    void removePropertyFromFavorites(Long propertyId);
-
-    @PreAuthorize("hasRole('BUYER')")
-    boolean isPropertyFavoritedByCurrentUser(Long propertyId);
-
     @PreAuthorize("hasRole('AGENT')")
     Property getPropertyByIdForCurrentAgent(Long id);
 
@@ -46,13 +37,7 @@ public interface PropertyService {
     @PreAuthorize("hasRole('AGENT')")
     void deletePropertyImage(Long propertyId, Long imageId);
 
-    @PreAuthorize("hasRole('BUYER')")
+    @PreAuthorize("hasAnyRole('BUYER','AGENT')")
     Property viewPropertyDetail(Long propertyId);
 
-
-    @PreAuthorize("hasRole('BUYER')")
-    List<Property> getFavoriteProperties();
-
-    @PreAuthorize("hasRole('BUYER')")
-    List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort);
 }

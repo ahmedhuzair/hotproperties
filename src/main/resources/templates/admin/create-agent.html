@@ -3,26 +3,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Agent</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar(true)"></div>
-<div class="container">
+<div th:replace="fragments/fragments :: navbar(true)"></div>
+<div class="container" style="width: 50%; align-self: center">
     <h1>Create a New Agent</h1>
 
     <form method="post" th:action="@{/users/admin/create-agent}" th:object="${user}" enctype="multipart/form-data">
 
         <label for="firstName">First Name</label>
-        <input id="firstName" required="" th:field="*{firstName}" type="text"/>
+        <input id="firstName" th:field="*{firstName}" type="text"/>
 
         <label for="lastName">Last Name</label>
-        <input id="lastName" required="" th:field="*{lastName}" type="text"/>
+        <input id="lastName" th:field="*{lastName}" type="text"/>
 
         <label for="username">Email</label>
-        <input id="username" required="" th:field="*{email}" type="email"/>
+        <input id="username" th:field="*{email}" type="email"/>
 
         <label for="password">Password</label>
-        <input id="password" required="" th:field="*{password}" type="password"/>
+        <input id="password" th:field="*{password}" type="password"/>
 
         <br/><br/>
 

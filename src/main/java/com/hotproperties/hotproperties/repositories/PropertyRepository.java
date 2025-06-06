@@ -40,6 +40,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     Property findByIdAndAgent(Long id, User agent);
 
+
     Property findPropertyById(Long propertyId);
 
     boolean existsById(Long id);

@@ -62,10 +62,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserProfile(User updatedUser) {
         User user = getCurrentUserContext().user();
-
+        if (user.getFirstName() == null || user.getFirstName().isBlank()
+                || user.getLastName() == null || user.getLastName().isBlank()){
+            throw new InvalidUserParameterException("First name and last name are required.");
+        }
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
-        user.setEmail(updatedUser.getEmail());
 
         userRepository.save(user);
     }
@@ -107,6 +109,11 @@ public class UserServiceImpl implements UserService {
         String username = auth.getName();
         return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found: " + email));
     }
 
     @Transactional
