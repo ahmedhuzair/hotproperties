@@ -19,9 +19,9 @@
     - [x] 3.1.2.1 Add Property
     - [x] 3.1.2.2 Edit Property
     - [x] 3.1.2.3 Delete Property 🎁
-  - [ ] 3.1.3 View Messages 🎁
-    - [ ] 3.1.3.1 View 🎁
-      - [ ] 3.1.3.1.1 Reply 🎁
+  - [x] 3.1.3 View Messages 🎁
+    - [x] 3.1.3.1 View 🎁
+      - [x] 3.1.3.1.1 Reply 🎁
     - [ ] 3.1.3.2 Delete 🎁
   - [x] 3.1.4 Logout
 
@@ -30,20 +30,20 @@
   - [x] 4.1.1 My Profile
     - [x] 4.1.1.1 Edit Profile
   - [x] 4.1.2 Browse Properties
-    - [ ] 4.1.2.1 Filters 🎁
-      - [ ] Zip code 🎁
-      - [ ] Min sq. ft. 🎁
-      - [ ] Min/Max Price 🎁
-      - [ ] Sort By 🎁
+    - [x] 4.1.2.1 Filters 🎁
+      - [x] Zip code 🎁
+      - [x] Min sq. ft. 🎁
+      - [x] Min/Max Price 🎁
+      - [x] Sort By 🎁
     - [x] 4.1.2.2 View Property Details
-      - [ ] 4.1.2.2.1 Image Viewer
-      - [ ] 4.1.2.2.2 Add to/Remove from Favorites 🎁
-      - [ ] 4.1.2.2.3 Send Message 🎁
-  - [ ] 4.1.3 Saved Favorites 🎁
-    - [ ] 4.1.3.1 View details 🎁
-    - [ ] 4.1.3.2 Remove 🎁
-  - [ ] 4.1.4 View Messages 🎁
-    - [ ] 4.1.4.1 Delete 🎁
+      - [x] 4.1.2.2.1 Image Viewer
+      - [x] 4.1.2.2.2 Add to/Remove from Favorites 🎁
+      - [x] 4.1.2.2.3 Send Message 🎁
+  - [x] 4.1.3 Saved Favorites 🎁
+    - [x] 4.1.3.1 View details 🎁
+    - [x] 4.1.3.2 Remove 🎁
+  - [x] 4.1.4 View Messages 🎁
+    - [x] 4.1.4.1 Delete 🎁
   - [x] 4.1.5 Logout
 
 ## 5. Admin Functionality [Required: 15%]
@@ -81,8 +81,8 @@
 - [x] 5.1.2.1.1 Delete User
 
 ### Browse Property Filtering [10%]
-- [ ] 4.1.2.1 Filters
-  - [ ] Zip code
-  - [ ] Min sq. ft.
-  - [ ] Min/Max Price
-  - [ ] Sort By
+- [x] 4.1.2.1 Filters
+  - [x] Zip code
+  - [x] Min sq. ft.
+  - [x] Min/Max Price
+  - [x] Sort By
