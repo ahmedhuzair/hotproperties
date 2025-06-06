@@ -28,6 +28,8 @@ public interface PropertyService {
     @PreAuthorize("hasRole('AGENT')")
     void deletePropertyByIdForCurrentAgent(Long id);
 
+    List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort);
+
     @PreAuthorize("isAuthenticated()")
     void prepareEditPropertyModel(Model model, Long id);
 

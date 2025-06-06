@@ -27,7 +27,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
             String location, Integer size, Double minPrice, Double maxPrice);
 
-    // Fallback to get all properties sorted
+    // get all properties sorted
     List<Property> findAllByOrderByPriceAsc();
     List<Property> findAllByOrderByPriceDesc();
 

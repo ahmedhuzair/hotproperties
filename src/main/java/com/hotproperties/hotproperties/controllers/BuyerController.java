@@ -37,6 +37,7 @@ public class BuyerController {
                                     @RequestParam(required = false) String sort,
                                     Model model) {
         List<Property> properties = propertyService.getFilteredProperties(zip, minSqFt, minPrice, maxPrice, sort);
+        model.addAttribute("propertyCount", properties.size());
         model.addAttribute("properties", properties);
         model.addAttribute("zip", zip);
         model.addAttribute("minSqFt", minSqFt);
@@ -46,13 +47,6 @@ public class BuyerController {
         return "/buyer/browse-properties";
     }
 
-
-    @PreAuthorize("hasRole('BUYER')")
-    @GetMapping("/favorites")
-    public String viewFavoriteProperties(Model model) {
-        model.addAttribute("properties", propertyService.getFavoriteProperties());
-        return "/buyer/saved-favorites";
-    }
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/properties/view/{property_id}")

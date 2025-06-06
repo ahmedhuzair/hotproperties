@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,12 +28,14 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyRepository propertyRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final FavoriteRepository favoriteRepository;
 
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1, MessageRepository messageRepository) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1, MessageRepository messageRepository, FavoriteRepository favoriteRepository2) {
         this.propertyRepository = propertyRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.favoriteRepository = favoriteRepository2;
     }
 
 
@@ -159,17 +160,6 @@ public class PropertyServiceImpl implements PropertyService {
 
     }
 
-    @Override
-
-    public List<Property> getFavoriteProperties() {
-        User buyer = userService.getCurrentUser();
-        List<Favorite> favorites = buyer.getFavorites();
-        List<Property> favoritePropertiesList = new ArrayList<>();
-        for (Favorite favorite : favorites) {
-            favoritePropertiesList.add(favorite.getProperty());
-        }
-        return favoritePropertiesList;
-    }
 
     @Override
     public List<Property> getFilteredProperties(String zip, Integer minSqFt, Integer minPrice, Integer maxPrice, String sort) {
@@ -204,19 +194,6 @@ public class PropertyServiceImpl implements PropertyService {
 
         boolean sortDesc = "desc".equalsIgnoreCase(sort);
 
-        // If ZIP is entered, match on location ending with zip
-        if (!locationFilter.isEmpty()) {
-            if (sortDesc) {
-                return propertyRepository.findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
-                        locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
-                );
-            } else {
-                return propertyRepository.findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
-                        locationFilter, minSqFtFilter, minPriceFilter, maxPriceFilter
-                );
-            }
-        }
-
         // General filter with location containing
         if (sortDesc) {
             return propertyRepository.findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
@@ -229,50 +206,7 @@ public class PropertyServiceImpl implements PropertyService {
         }
     }
 
-
-
     @Override
-    @Transactional
-    public void addPropertyToFavorites(Long propertyId) {
-        User buyer = userService.getCurrentUser();
-        if (buyer == null) {
-            throw new InvalidFavoriteParameterException("User reference is missing or invalid.");
-        }
-
-        if (propertyId == null) {
-            throw new InvalidFavoriteParameterException("Property ID is required.");
-        }
-        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
-        Favorite favorite = new Favorite(property, buyer);
-        favoriteRepository.save(favorite);
-    }
-
-    @Override
-    @Transactional
-    public void removePropertyFromFavorites(Long propertyId) {
-
-        User buyer = userService.getCurrentUser();
-        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found"));
-
-        if (!favoriteRepository.existsByUserIdAndPropertyId(buyer.getId(), propertyId)) {
-            throw new NotFoundException("Favorite with property ID " + propertyId + " for user " + buyer.getId() + " does not exist");
-        }
-        Favorite favorite = favoriteRepository.findByUserIdAndPropertyId(buyer.getId(), propertyId)
-                .orElseThrow(()-> new NotFoundException("Favorite not found"));
-        buyer.getFavorites().remove(favorite);
-        property.getFavorites().remove(favorite);
-
-    }
-
-    @Override
-    public boolean isPropertyFavoritedByCurrentUser(Long propertyId) {
-
-        User buyer = userService.getCurrentUser();
-        return favoriteRepository.existsByUserIdAndPropertyId(buyer.getId(), propertyId);
-    }
-
-    @Override
-
     public void prepareEditPropertyModel(Model model, Long id) {
         User agent = userService.getCurrentUser();
         Property properties = propertyRepository.findByIdAndAgent(id, agent);
