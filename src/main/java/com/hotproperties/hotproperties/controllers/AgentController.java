@@ -55,11 +55,12 @@ public class AgentController {
                 propertyService.storePropertyImages(savedProperty.getId(), files);
 
             }
-            redirectAttributes.addFlashAttribute("successMessage", "Property added successfully");
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Property '" + savedProperty.getTitle() + "' added successfully");
             logger.info("Property '{}' added to Agent '{}' list.", savedProperty.getTitle(), user.getEmail());
             return "redirect:/properties/manage";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add property. Please try again." + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add property. " + e.getMessage());
             return "redirect:/properties/add";
         }
     }
@@ -79,7 +80,7 @@ public class AgentController {
         User user = userService.getCurrentUser();
         Property propertyToBeDeleted = propertyService.viewPropertyDetail(property_id);
         propertyService.deletePropertyByIdForCurrentAgent(property_id);
-        redirectAttributes.addFlashAttribute("successMessage", "Property deleted successfully.");
+        redirectAttributes.addFlashAttribute("successMessage", "Property '" + propertyToBeDeleted.getTitle() + "' deleted successfully.");
         logger.info("Property '{}' removed from Agent '{}' list.", propertyToBeDeleted.getTitle(), user.getEmail());
         return "redirect:/properties/manage";
     }

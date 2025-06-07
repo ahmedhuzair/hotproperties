@@ -32,6 +32,7 @@ public class DataInitializer {
             );
 
 
+
             userRepository.saveAll(List.of(u1));
 
             System.out.println("🟢 Admin with email:'mason.lee@email.com' and pw: 'ml.123'  created .");

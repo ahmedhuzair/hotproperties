@@ -23,9 +23,10 @@
         <thead style="background-color: lightgrey">
         <tr>
             <th>Property</th>
-            <th>Buyer</th>
-            <th>Message</th>
-            <th>Timestamp</th>
+            <th>Buyer's Name</th>
+            <th>Buyer's Message</th>
+            <th>Received At</th>
+            <th>Your Reply</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -35,6 +36,7 @@
             <td th:text="${m.sender.firstName}+ ' ' + ${m.sender.lastName}">Buyer</td>
             <td th:text="${m.content}">Message</td>
             <td th:text="${#temporals.format(m.timeStamp, 'yyyy-MM-dd HH:mm')}">Sent At</td>
+            <td th:text="${m.reply}">Agent Reply</td>
             <td>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     <a th:href="@{/messages/{message_id}(message_id=${m.id})}">

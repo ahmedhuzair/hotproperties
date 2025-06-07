@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("JWT filter on URI: {}", request.getRequestURI());
+       // log.info("JWT filter on URI: {}", request.getRequestURI());
 
         String path = request.getRequestURI();
 

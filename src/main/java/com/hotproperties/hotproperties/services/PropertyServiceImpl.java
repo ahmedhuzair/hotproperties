@@ -156,8 +156,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Property viewPropertyDetail(Long propertyId) {
-        return propertyRepository.findPropertyById(propertyId);
-
+        return propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property not found."));
     }
 
 

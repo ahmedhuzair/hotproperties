@@ -67,7 +67,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void sendReplyToBuyer(Long messageId, String message) {
         Message replyMessage = messageRepository.findById(messageId)
-                .orElseThrow(() -> new NotFoundException("Message not found"));
+                .orElseThrow(() -> new NotFoundException("Message not found. Could have been deleted by the Buyer."));
 
         replyMessage.setReply(message);
         if (message == null || message.isEmpty()) {
@@ -112,7 +112,7 @@ public class MessageServiceImpl implements MessageService {
     public int findUnrepliedMessageCountByAgentId() {
         User agent = userService.getCurrentUser();
         List<Property> propertiesOfAgent = propertyRepository.findAllByAgentOrderByTitleDesc(agent);
-        List<Message> unrepliedMessagesOfAgent = messageRepository.findByPropertyInAndReplyIsNull(propertiesOfAgent);
+        List<Message> unrepliedMessagesOfAgent = messageRepository.findByPropertyInAndReplyIs(propertiesOfAgent,"");
         return unrepliedMessagesOfAgent.size();
     }
 

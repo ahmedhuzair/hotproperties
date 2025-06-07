@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
         String exceptionMessage = ex.getMessage();
 
         // Populate model attributes for Thymeleaf
-        model.addAttribute("status", statusCode != null ? statusCode : 500);
-        model.addAttribute("error", errorMessage != null ? errorMessage : "Unexpected error");
+        model.addAttribute("status", statusCode != null ? statusCode : 404);
+        model.addAttribute("error", errorMessage != null ? errorMessage : "This page does not exist.");
         model.addAttribute("path", requestUri != null ? requestUri : path);
         model.addAttribute("query", queryString);
         model.addAttribute("method", httpMethod);

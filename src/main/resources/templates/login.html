@@ -17,7 +17,7 @@
     <div class="welcome-box">
 
     <h1>Login</h1>
-        <div th:if="${successMessage}" class="success" style="background-color: #d4edda; color: #155724; padding: 8px 5px; border-radius: 5px; ">
+        <div th:if="${successMessage}" class="success">
             <p th:text="${successMessage}"></p>
         </div>
         <div th:if="${errorMessage}" class="failure">

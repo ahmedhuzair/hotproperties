@@ -113,17 +113,41 @@ label {
 }
 
 .success {
-    color: green;
     font-size: 0.95em;
     margin-bottom: 14px;
     text-align: center;
+    color: #155724;
+    background-color: #d4edda;
+    padding: 8px 5px;
+    border-radius: 5px;
 }
 
-.failure {
-    color: red;
+.error-message {
     font-size: 0.95em;
     margin-bottom: 14px;
     text-align: center;
+    color: #721c24;
+    background-color: #f8d7da;
+    padding: 8px 5px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+
+}
+
+
+
+.failure {
+    display: inline-block;
+    font-size: 0.95em;
+    margin-bottom: 14px;
+    align-content: center;
+    text-align: center;
+    width: fit-content;
+    color: #721c24;
+    background-color: #f8d7da;
+    padding: 8px 5px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
 }
 
 input[type="email"],
@@ -140,12 +164,6 @@ ul.no-bullets {
     list-style-type: none;
     padding-left: 0;
     margin: 0;
-}
-
-.error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-bottom: 10px;
 }
 
 button {
@@ -276,17 +294,19 @@ button.add-property-btn:hover {
 a {
     text-decoration: none;
     color: #003366;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 a:hover {
     text-decoration: underline;
     color: #001F4D; /* slightly darker on hover */
 }
+
 .gray-btn {
     background-color: gray;
 
 }
+
 .gray-btn:hover {
- background-color: #555;
+    background-color: #555;
 }
