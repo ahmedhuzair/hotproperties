@@ -3,7 +3,6 @@ package com.hotproperties.hotproperties.controllers;
 
 import com.hotproperties.hotproperties.entities.Property;
 import com.hotproperties.hotproperties.entities.User;
-import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
 import com.hotproperties.hotproperties.services.UserService;
 import org.slf4j.Logger;
@@ -23,14 +22,12 @@ public class AgentController {
 
     private final UserService userService;
     private final PropertyService propertyService;
-    private final MessageService messageService;
 
     private static final Logger logger = LoggerFactory.getLogger(AgentController.class);
 
-    public AgentController(UserService userService, PropertyService propertyService, MessageService messageService) {
+    public AgentController(UserService userService, PropertyService propertyService) {
         this.userService = userService;
         this.propertyService = propertyService;
-        this.messageService = messageService;
     }
 
     // === PROPERTY ADDING BY AGENT ONLY ===

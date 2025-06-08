@@ -1,24 +1,19 @@
 package com.hotproperties.hotproperties.services;
 
 import com.hotproperties.hotproperties.entities.*;
-import com.hotproperties.hotproperties.exceptions.InvalidFavoriteParameterException;
 import com.hotproperties.hotproperties.exceptions.InvalidPropertyImageParameterException;
 import com.hotproperties.hotproperties.exceptions.InvalidPropertyParameterException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
-import com.hotproperties.hotproperties.repositories.FavoriteRepository;
-import com.hotproperties.hotproperties.repositories.MessageRepository;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
 import com.hotproperties.hotproperties.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,14 +23,13 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyRepository propertyRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final FavoriteRepository favoriteRepository;
 
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository, FavoriteRepository favoriteRepository, FavoriteRepository favoriteRepository1, MessageRepository messageRepository, FavoriteRepository favoriteRepository2) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, UserService userService, UserRepository userRepository) {
         this.propertyRepository = propertyRepository;
         this.userService = userService;
         this.userRepository = userRepository;
-        this.favoriteRepository = favoriteRepository2;
+
     }
 
 
@@ -60,10 +54,6 @@ public class PropertyServiceImpl implements PropertyService {
         return propertyRepository.findAllByAgentOrderByTitleDesc(agent);
     }
 
-    @Override
-    public List<Property> getAllProperties() {
-        return propertyRepository.findAllByOrderByTitleDesc();
-    }
 
     @Override
     public Property getPropertyByIdForCurrentAgent(Long id) {

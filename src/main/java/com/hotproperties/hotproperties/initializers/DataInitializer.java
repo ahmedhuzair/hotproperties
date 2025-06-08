@@ -37,7 +37,7 @@ public class DataInitializer {
 
             System.out.println("🟢 Admin with email:'mason.lee@email.com' and pw: 'ml.123'  created .");
         } else {
-            System.out.println("🟡 Admin already exists, skipping initialization.");
+            System.out.println("🟡 Admin with email:'mason.lee@email.com' and pw: 'ml.123' already exists, skipping initialization.");
         }
     }
 }

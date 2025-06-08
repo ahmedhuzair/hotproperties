@@ -13,12 +13,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     //Filtering Start
 
-    List<Property> findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
-            String zip, Integer minSqFt, Double minPrice, Double maxPrice);
-
-    List<Property> findByLocationEndingWithAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
-            String zip, Integer minSqFt, Double minPrice, Double maxPrice);
-
     // ASCENDING ORDER
     List<Property> findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceAsc(
             String location, Integer size, Double minPrice, Double maxPrice);
@@ -27,9 +21,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findByLocationContainingAndSizeGreaterThanEqualAndPriceBetweenOrderByPriceDesc(
             String location, Integer size, Double minPrice, Double maxPrice);
 
-    // get all properties sorted
-    List<Property> findAllByOrderByPriceAsc();
-    List<Property> findAllByOrderByPriceDesc();
 
     //Filtering End
 
@@ -39,7 +30,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findAllByOrderByTitleDesc();
 
     Property findByIdAndAgent(Long id, User agent);
-
 
     Property findPropertyById(Long propertyId);
 

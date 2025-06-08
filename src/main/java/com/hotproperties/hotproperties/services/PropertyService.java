@@ -16,8 +16,6 @@ public interface PropertyService {
     @PreAuthorize("hasRole('AGENT')")
     List<Property> getAllPropertiesByAgent(User agent);
 
-    @PreAuthorize("hasRole('BUYER')")
-    List<Property> getAllProperties();
 
     @PreAuthorize("hasRole('AGENT')")
     Property getPropertyByIdForCurrentAgent(Long id);

@@ -5,16 +5,12 @@ import com.hotproperties.hotproperties.entities.Property;
 import com.hotproperties.hotproperties.entities.User;
 import com.hotproperties.hotproperties.exceptions.InvalidMessageParameterException;
 import com.hotproperties.hotproperties.exceptions.NotFoundException;
-import com.hotproperties.hotproperties.repositories.FavoriteRepository;
 import com.hotproperties.hotproperties.repositories.MessageRepository;
 import com.hotproperties.hotproperties.repositories.PropertyRepository;
-import com.hotproperties.hotproperties.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class MessageServiceImpl implements MessageService {

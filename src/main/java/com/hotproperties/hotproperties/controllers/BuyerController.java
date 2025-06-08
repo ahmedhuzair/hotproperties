@@ -2,17 +2,13 @@ package com.hotproperties.hotproperties.controllers;
 
 import com.hotproperties.hotproperties.entities.Property;
 import com.hotproperties.hotproperties.services.FavoriteService;
-import com.hotproperties.hotproperties.services.MessageService;
 import com.hotproperties.hotproperties.services.PropertyService;
-import com.hotproperties.hotproperties.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -23,7 +19,7 @@ public class BuyerController {
     private final FavoriteService favoriteService;
 
 
-    public BuyerController(PropertyService propertyService, UserService userService, MessageService messageService, FavoriteService favoriteService) {
+    public BuyerController(PropertyService propertyService, FavoriteService favoriteService) {
         this.propertyService = propertyService;
         this.favoriteService = favoriteService;
     }
